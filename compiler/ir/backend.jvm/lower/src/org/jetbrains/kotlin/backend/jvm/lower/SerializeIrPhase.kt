@@ -16,7 +16,7 @@ import org.jetbrains.kotlin.ir.declarations.IrModuleFragment
 import org.jetbrains.kotlin.ir.declarations.MetadataSource
 
 internal val serializeIrPhase = makeCustomPhase<JvmBackendContext, IrModuleFragment>(
-    { context, irModule -> SerializeIrPhase(context).lower(irModule) },
+    { context, irModule -> SerializeIrPhase(context).lower(irModule, context) },
     name = "SerializeIr",
     description = "If specified by compiler options, save serialized IR in class annotations",
     prerequisite = setOf(expectDeclarationsRemovingPhase),

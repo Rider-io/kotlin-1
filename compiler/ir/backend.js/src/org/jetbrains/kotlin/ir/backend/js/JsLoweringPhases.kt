@@ -35,7 +35,7 @@ private fun makeJsModulePhase(
     description: String,
     prerequisite: Set<NamedCompilerPhase<JsIrBackendContext, *>> = emptySet()
 ): NamedCompilerPhase<JsIrBackendContext, Iterable<IrModuleFragment>> = makeCustomJsModulePhase(
-    op = { context, modules -> lowering(context).lower(modules) },
+    op = { context, modules -> lowering(context).lower(modules, context) },
     name = name,
     description = description,
     prerequisite = prerequisite

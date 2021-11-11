@@ -67,7 +67,13 @@ interface BodyAndScriptBodyLoweringPass : BodyLoweringPass {
     override fun lower(irFile: IrFile) = runOnFilePostfix(irFile)
 }
 
-fun FileLoweringPass.lower(moduleFragment: IrModuleFragment) = moduleFragment.files.forEach { lower(it) }
+fun FileLoweringPass.lower(
+    moduleFragment: IrModuleFragment,
+    context: CommonBackendContext
+) = moduleFragment.files.forEach {
+    context.currentFile = it
+    lower(it)
+}
 
 fun ClassLoweringPass.runOnFilePostfix(irFile: IrFile) {
     irFile.acceptVoid(ClassLoweringVisitor(this))

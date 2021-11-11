@@ -62,6 +62,9 @@ class JsIrBackendContext(
     val granularity: JsGenerationGranularity = JsGenerationGranularity.WHOLE_PROGRAM,
     val icCompatibleIr2Js: Boolean = false,
 ) : JsCommonBackendContext {
+
+    override var currentFile: IrFile? = null
+
     val fileToInitializationFuns: MutableMap<IrFile, IrSimpleFunction?> = mutableMapOf()
     val fileToInitializerPureness: MutableMap<IrFile, Boolean> = mutableMapOf()
     val fieldToInitializer: MutableMap<IrField, IrExpression> = mutableMapOf()

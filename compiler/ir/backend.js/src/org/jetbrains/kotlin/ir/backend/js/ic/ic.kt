@@ -174,9 +174,9 @@ fun lowerPreservingIcData(module: IrModuleFragment, context: JsIrBackendContext,
         controller.currentStage = i + 1
         when (lowering) {
             is DeclarationLowering ->
-                lowering.declarationTransformer(context).lower(module)
+                lowering.declarationTransformer(context).lower(module, context)
             is BodyLowering ->
-                lowering.bodyLowering(context).lower(module)
+                lowering.bodyLowering(context).lower(module, context)
             else -> TODO("what about other lowerings?")
         }
     }
