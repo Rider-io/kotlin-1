@@ -63,6 +63,10 @@ class JsAnnotationImplementationTransformer(val jsContext: JsIrBackendContext) :
         annotationClass: IrClass,
         generatedConstructor: IrConstructor
     ) {
-        throw IllegalStateException("Should not be called")
+        compilationException(
+            "Should not be called",
+            implClass,
+            jsContext
+        )
     }
 }
