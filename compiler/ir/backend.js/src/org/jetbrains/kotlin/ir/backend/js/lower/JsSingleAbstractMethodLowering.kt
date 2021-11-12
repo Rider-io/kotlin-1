@@ -8,6 +8,7 @@ package org.jetbrains.kotlin.ir.backend.js.lower
 import org.jetbrains.kotlin.backend.common.BodyLoweringPass
 import org.jetbrains.kotlin.backend.common.CommonBackendContext
 import org.jetbrains.kotlin.backend.common.ScopeWithIr
+import org.jetbrains.kotlin.backend.common.compilationException
 import org.jetbrains.kotlin.backend.common.lower.SingleAbstractMethodLowering
 import org.jetbrains.kotlin.descriptors.DescriptorVisibilities
 import org.jetbrains.kotlin.descriptors.DescriptorVisibility
@@ -60,6 +61,7 @@ class JsSingleAbstractMethodLowering(context: CommonBackendContext) : SingleAbst
         // FE doesn't allow type parameters for now.
         // And since there is a to-do in common SingleAbstractMethodLowering (at function visitTypeOperator),
         // we don't have to be more saint than a pope here.
-        return typeOperand.classOrNull?.defaultType ?: error("Unsupported SAM conversion: ${typeOperand.render()}")
+        return typeOperand.classOrNull?.defaultType
+            ?: compilationException("Unsupported SAM conversion", typeOperand, context)
     }
 }

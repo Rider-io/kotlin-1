@@ -6,6 +6,7 @@
 package org.jetbrains.kotlin.ir.backend.js.lower
 
 import org.jetbrains.kotlin.backend.common.BodyLoweringPass
+import org.jetbrains.kotlin.backend.common.compilationException
 import org.jetbrains.kotlin.backend.common.ir.copyTo
 import org.jetbrains.kotlin.backend.common.lower.createIrBuilder
 import org.jetbrains.kotlin.ir.backend.js.JsIrBackendContext
@@ -101,7 +102,12 @@ class PropertyReferenceLowering(private val context: JsIrBackendContext) : BodyL
         }
 
         private fun buildGetterLambda(factory: IrSimpleFunction, reference: IrPropertyReference, boundValueParameters: List<IrValueParameter>): IrExpression {
-            val getter = reference.getter?.owner ?: error("Getter expected")
+            val getter = reference.getter?.owner
+                ?: compilationException(
+                    "Getter expected",
+                    reference,
+                    context
+                )
             return buildAccessorLambda(factory, getter, reference, boundValueParameters)
         }
 
@@ -117,10 +123,19 @@ class PropertyReferenceLowering(private val context: JsIrBackendContext) : BodyL
             val superName = when (accessor.symbol) {
                 reference.getter -> "get"
                 reference.setter -> "set"
-                else -> error("Unexpected accessor ${accessor.render()}")
+                else -> compilationException(
+                    "Unexpected accessor",
+                    accessor,
+                    context
+                )
             }
 
-            val classifier = (reference.type as IrSimpleType).classOrNull ?: error("Simple type expected")
+            val classifier = (reference.type as IrSimpleType).classOrNull
+                ?: compilationException(
+                    "Simple type expected",
+                    reference,
+                    context
+                )
             val supperAccessor =
                 classifier.owner.declarations.filterIsInstance<IrSimpleFunction>().single { it.name.asString() == superName }
 

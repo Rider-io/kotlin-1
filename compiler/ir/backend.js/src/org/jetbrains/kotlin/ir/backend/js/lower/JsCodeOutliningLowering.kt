@@ -5,11 +5,8 @@
 
 package org.jetbrains.kotlin.ir.backend.js.lower
 
-import org.jetbrains.kotlin.backend.common.BodyLoweringPass
-import org.jetbrains.kotlin.backend.common.IrElementTransformerVoidWithContext
+import org.jetbrains.kotlin.backend.common.*
 import org.jetbrains.kotlin.backend.common.lower.createIrBuilder
-import org.jetbrains.kotlin.backend.common.pop
-import org.jetbrains.kotlin.backend.common.push
 import org.jetbrains.kotlin.descriptors.DescriptorVisibilities
 import org.jetbrains.kotlin.ir.IrElement
 import org.jetbrains.kotlin.ir.IrStatement
@@ -31,6 +28,7 @@ import org.jetbrains.kotlin.ir.expressions.IrExpression
 import org.jetbrains.kotlin.ir.symbols.IrFunctionSymbol
 import org.jetbrains.kotlin.ir.util.constructors
 import org.jetbrains.kotlin.ir.util.dumpKotlinLike
+import org.jetbrains.kotlin.ir.util.file
 import org.jetbrains.kotlin.ir.visitors.IrElementVisitorVoid
 import org.jetbrains.kotlin.ir.visitors.acceptChildrenVoid
 import org.jetbrains.kotlin.ir.visitors.transformChildrenVoid
@@ -96,7 +94,12 @@ private class JsCodeOutlineTransformer(
         val name = irValueDeclaration.name
         if (!name.isSpecial) {
             val identifier = name.identifier
-            val currentScope = localScopes.lastOrNull() ?: error("Expecting a scope")
+            val currentScope = localScopes.lastOrNull()
+                ?: compilationException(
+                    "Expecting a scope",
+                    irValueDeclaration,
+                    backendContext
+                )
             currentScope[identifier] = irValueDeclaration
         }
     }
@@ -133,7 +136,12 @@ private class JsCodeOutlineTransformer(
         if (expression.symbol != backendContext.intrinsics.jsCode)
             return null
 
-        val jsCodeArg = expression.getValueArgument(0) ?: error("Expected js code string")
+        val jsCodeArg = expression.getValueArgument(0)
+            ?: compilationException(
+                "Expected js code string",
+                expression,
+                backendContext
+            )
         val jsStatements = translateJsCodeIntoStatementList(jsCodeArg, backendContext) ?: return null
 
         // Collect used Kotlin local variables and parameters.

@@ -6,6 +6,7 @@
 package org.jetbrains.kotlin.ir.backend.js.lower
 
 import org.jetbrains.kotlin.backend.common.DeclarationTransformer
+import org.jetbrains.kotlin.backend.common.compilationException
 import org.jetbrains.kotlin.backend.common.lower.AnnotationImplementationTransformer
 import org.jetbrains.kotlin.ir.IrStatement
 import org.jetbrains.kotlin.ir.backend.js.JsIrBackendContext
@@ -55,7 +56,7 @@ class JsAnnotationImplementationTransformer(val jsContext: JsIrBackendContext) :
         when {
             type.isPrimitiveArray() -> arraysContentEquals[type]
             else -> arraysContentEquals.entries.singleOrNull { (k, _) -> k.isArray() }?.value
-        } ?: error("Can't find an Arrays.contentEquals method for array type ${type.render()}")
+        } ?: compilationException("Can't find an Arrays.contentEquals method for array type", type, jsContext)
 
     override fun implementAnnotationPropertiesAndConstructor(
         implClass: IrClass,
