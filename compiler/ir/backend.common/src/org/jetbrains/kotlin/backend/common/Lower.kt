@@ -73,6 +73,7 @@ fun FileLoweringPass.lower(
 ) = moduleFragment.files.forEach {
     context.currentFile = it
     lower(it)
+    context.currentFile = null
 }
 
 fun ClassLoweringPass.runOnFilePostfix(irFile: IrFile) {

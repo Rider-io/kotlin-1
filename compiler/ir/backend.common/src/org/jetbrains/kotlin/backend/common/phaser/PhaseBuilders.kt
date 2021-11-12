@@ -119,6 +119,7 @@ private class FileLoweringPhaseAdapter<Context : CommonBackendContext>(
     override fun invoke(phaseConfig: PhaseConfig, phaserState: PhaserState<IrFile>, context: Context, input: IrFile): IrFile {
         context.currentFile = input
         lowering(context).lower(input)
+        context.currentFile = null
         return input
     }
 }
