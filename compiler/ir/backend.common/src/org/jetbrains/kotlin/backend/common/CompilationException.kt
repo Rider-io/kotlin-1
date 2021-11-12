@@ -7,6 +7,7 @@ package org.jetbrains.kotlin.backend.common
 
 import org.jetbrains.kotlin.ir.IrElement
 import org.jetbrains.kotlin.ir.UNDEFINED_OFFSET
+import org.jetbrains.kotlin.ir.builders.IrGeneratorContext
 import org.jetbrains.kotlin.ir.declarations.IrFile
 import org.jetbrains.kotlin.ir.declarations.path
 import org.jetbrains.kotlin.ir.types.IrType
@@ -15,7 +16,7 @@ import org.jetbrains.kotlin.ir.util.dumpKotlinLike
 class CompilationException(
     message: String,
     private val file: IrFile?,
-    private val ir: IrHolder<Any>,
+    private val ir: IrHolder<Any?>,
 ) : RuntimeException(
     message
 ) {
@@ -35,7 +36,7 @@ class CompilationException(
         get() = ir.dumpKotlinLike()
 }
 
-sealed class IrHolder<out T : Any>(val value: T) {
+sealed class IrHolder<out T>(val value: T) {
     abstract fun dumpKotlinLike(): String
 
     class IrElementHolder(value: IrElement) : IrHolder<IrElement>(value) {
@@ -43,9 +44,9 @@ sealed class IrHolder<out T : Any>(val value: T) {
             value.dumpKotlinLike()
     }
 
-    class IrTypeHolder(value: IrType) : IrHolder<IrType>(value) {
+    class IrTypeHolder(value: IrType?) : IrHolder<IrType?>(value) {
         override fun dumpKotlinLike(): String =
-            value.dumpKotlinLike()
+            value?.dumpKotlinLike() ?: ""
     }
 }
 
@@ -63,7 +64,7 @@ fun compilationException(
 
 fun compilationException(
     message: String,
-    type: IrType,
+    type: IrType?,
     context: CommonBackendContext
 ): Nothing {
     throw CompilationException(
@@ -87,7 +88,7 @@ fun compilationException(
 
 fun compilationException(
     message: String,
-    type: IrType,
+    type: IrType?,
     file: IrFile,
 ): Nothing {
     throw CompilationException(
