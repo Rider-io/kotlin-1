@@ -8,6 +8,7 @@ package org.jetbrains.kotlin.backend.common.lower
 import org.jetbrains.kotlin.backend.common.BodyLoweringPass
 import org.jetbrains.kotlin.backend.common.CommonBackendContext
 import org.jetbrains.kotlin.backend.common.IrElementTransformerVoidWithContext
+import org.jetbrains.kotlin.backend.common.compilationException
 import org.jetbrains.kotlin.backend.common.ir.Symbols
 import org.jetbrains.kotlin.backend.common.lower.loops.*
 import org.jetbrains.kotlin.backend.common.lower.loops.handlers.*
@@ -140,7 +141,12 @@ private class Transformer(
                         additionalStatements.addAll(headerInfo.additionalStatements)
                     }
                     // None of the handlers in RangeHeaderInfoBuilder should return a IndexedGetHeaderInfo (those are only for loops).
-                    is IndexedGetHeaderInfo -> error("Unexpected IndexedGetHeaderInfo returned by RangeHeaderInfoBuilder")
+                    is IndexedGetHeaderInfo ->
+                        compilationException(
+                            "Unexpected IndexedGetHeaderInfo returned by RangeHeaderInfoBuilder",
+                            argument,
+                            this@Transformer.context
+                        )
                 }
 
                 // TODO: Optimize contains() for progressions with |step| > 1 or unknown step and/or direction. These are also not optimized

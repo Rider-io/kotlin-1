@@ -16,10 +16,7 @@
 
 package org.jetbrains.kotlin.backend.common.lower
 
-import org.jetbrains.kotlin.backend.common.BackendContext
-import org.jetbrains.kotlin.backend.common.BodyLoweringPass
-import org.jetbrains.kotlin.backend.common.collectTailRecursionCalls
-import org.jetbrains.kotlin.backend.common.deepCopyWithVariables
+import org.jetbrains.kotlin.backend.common.*
 import org.jetbrains.kotlin.ir.IrElement
 import org.jetbrains.kotlin.ir.UNDEFINED_OFFSET
 import org.jetbrains.kotlin.ir.builders.*
@@ -159,7 +156,12 @@ private class BodyTransformer(
         val remapper = VariableRemapper(parameterToArgument)
         defaultValuedParameters.let { if (lowering.useProperComputationOrderOfTailrecDefaultParameters) it else it.asReversed() }
             .associateWithTo(parameterToArgument) { parameter ->
-                val originalDefaultValue = parameter.defaultValue?.expression ?: throw Error("no argument specified for $parameter")
+                val originalDefaultValue = parameter.defaultValue?.expression
+                    ?: compilationException(
+                        "no argument specified for $parameter",
+                        expression,
+                        this@BodyTransformer.lowering.context.ir.context
+                    )
                 irTemporary(originalDefaultValue.deepCopyWithVariables().patchDeclarationParents(parent).transform(remapper, null))
             }
 

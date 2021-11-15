@@ -8,6 +8,7 @@ package org.jetbrains.kotlin.backend.common.lower.loops
 import org.jetbrains.kotlin.backend.common.BodyLoweringPass
 import org.jetbrains.kotlin.backend.common.CommonBackendContext
 import org.jetbrains.kotlin.backend.common.IrElementTransformerVoidWithContext
+import org.jetbrains.kotlin.backend.common.compilationException
 import org.jetbrains.kotlin.backend.common.lower.createIrBuilder
 import org.jetbrains.kotlin.backend.common.phaser.makeIrFilePhase
 import org.jetbrains.kotlin.ir.IrElement
@@ -295,7 +296,10 @@ private class RangeLoopTransformer(
         val loopVariableComponentIndices: List<Int>
     )
 
-    private class FindInitializerCallVisitor(private val mainLoopVariable: IrVariable?) : IrElementVisitorVoid {
+    private class FindInitializerCallVisitor(
+        private val mainLoopVariable: IrVariable?,
+        private val context: CommonBackendContext
+    ) : IrElementVisitorVoid {
         var initializerCall: IrCall? = null
 
         override fun visitElement(element: IrElement) {
@@ -317,8 +321,10 @@ private class RangeLoopTransformer(
             when {
                 candidateCall == null -> super.visitCall(expression)
                 initializerCall == null -> initializerCall = candidateCall
-                else -> throw IllegalStateException(
-                    "Multiple initializer calls found. First: ${initializerCall!!.render()}\nSecond: ${candidateCall.render()}"
+                else -> compilationException(
+                    "Multiple initializer calls found. First: ${initializerCall!!.render()}\nSecond: ${candidateCall.render()}",
+                    expression,
+                    context
                 )
             }
         }
@@ -385,7 +391,7 @@ private class RangeLoopTransformer(
                 //     TYPE_OP type=kotlin.String origin=IMPLICIT_NOTNULL typeOperand=kotlin.String
                 //       CALL 'public abstract fun next (): T of ...Iterator [operator] declared in ...Iterator' type=kotlin.String origin=FOR_LOOP_NEXT
                 //         $this: GET_VAR 'val tmp0_iterator: ...Iterator<kotlin.String> [val] declared in <root>.box' type=...Iterator<kotlin.String> origin=null
-                FindInitializerCallVisitor(mainLoopVariable).apply { it.acceptVoid(this) }.initializerCall
+                FindInitializerCallVisitor(mainLoopVariable, context).apply { it.acceptVoid(this) }.initializerCall
             }
             when (val origin = initializer?.origin) {
                 IrStatementOrigin.FOR_LOOP_NEXT -> {

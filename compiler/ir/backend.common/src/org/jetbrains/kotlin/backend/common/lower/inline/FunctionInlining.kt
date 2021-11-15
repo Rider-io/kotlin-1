@@ -6,10 +6,7 @@
 package org.jetbrains.kotlin.backend.common.lower.inline
 
 
-import org.jetbrains.kotlin.backend.common.BodyLoweringPass
-import org.jetbrains.kotlin.backend.common.CommonBackendContext
-import org.jetbrains.kotlin.backend.common.IrElementTransformerVoidWithContext
-import org.jetbrains.kotlin.backend.common.ScopeWithIr
+import org.jetbrains.kotlin.backend.common.*
 import org.jetbrains.kotlin.backend.common.ir.Symbols
 import org.jetbrains.kotlin.backend.common.ir.isPure
 import org.jetbrains.kotlin.backend.common.lower.InnerClassesSupport
@@ -315,7 +312,11 @@ class FunctionInlining(
                                 function.valueParameters.size
                             )
                         else ->
-                            error("Unknown function kind : ${function.render()}")
+                            compilationException(
+                                "Unknown function kind",
+                                function,
+                                context
+                            )
                     }
                 }.apply {
                     for (parameter in functionParameters) {
@@ -422,7 +423,12 @@ class FunctionInlining(
 
             while (parameterClassDeclaration.isInner) {
                 val outerClass = parameterClassDeclaration.parentAsClass
-                val outerClassThis = outerClass.thisReceiver ?: error("${outerClass.name} has a null `thisReceiver` property")
+                val outerClassThis = outerClass.thisReceiver
+                    ?: compilationException(
+                        "${outerClass.name} has a null `thisReceiver` property",
+                        outerClass,
+                        context
+                    )
 
                 val parameterToArgument = ParameterToArgument(
                     parameter = outerClassThis,
@@ -510,7 +516,11 @@ class FunctionInlining(
                     else -> {
                         val message = "Incomplete expression: call to ${callee.render()} " +
                                 "has no argument at index ${parameter.index}"
-                        throw Error(message)
+                        compilationException(
+                            message,
+                            callee,
+                            context
+                        )
                     }
                 }
             }
