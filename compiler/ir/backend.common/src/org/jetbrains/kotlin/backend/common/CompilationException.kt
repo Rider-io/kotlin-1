@@ -17,8 +17,10 @@ class CompilationException(
     message: String,
     private val file: IrFile?,
     private val ir: IrHolder<Any?>,
+    cause: Throwable? = null
 ) : RuntimeException(
-    message
+    message,
+    cause,
 ) {
     override val message: String
         get() = "Back-end (JS): Please report this problem.\nProblem with `$content`.\nDetails: " + super.message

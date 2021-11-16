@@ -135,7 +135,16 @@ fun BodyLoweringPass.runOnFilePostfix(
 ) {
     val visitor = BodyLoweringVisitor(this, withLocalDeclarations, allowDeclarationModification)
     for (declaration in ArrayList(irFile.declarations)) {
-        declaration.accept(visitor, null)
+        try {
+            declaration.accept(visitor, null)
+        } catch (e: Throwable) {
+            throw CompilationException(
+                "Internal error in body lowering\n",
+                irFile,
+                IrHolder.IrElementHolder(declaration),
+                cause = e
+            )
+        }
     }
 }
 
@@ -221,8 +230,17 @@ interface DeclarationTransformer : FileLoweringPass {
     override fun lower(irFile: IrFile) {
         val visitor = Visitor(this)
         irFile.declarations.transformFlat { declaration ->
-            declaration.acceptVoid(visitor)
-            transformFlatRestricted(declaration)
+            try {
+                declaration.acceptVoid(visitor)
+                transformFlatRestricted(declaration)
+            } catch (e: Throwable) {
+                throw CompilationException(
+                    "Internal error in declaration transformer\n",
+                    irFile,
+                    IrHolder.IrElementHolder(declaration),
+                    cause = e
+                )
+            }
         }
     }
 
