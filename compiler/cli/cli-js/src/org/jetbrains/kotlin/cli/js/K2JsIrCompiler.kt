@@ -446,7 +446,7 @@ class K2JsIrCompiler : CLICompiler<K2JSCompilerArguments>() {
             } catch (e: CompilationException) {
                 messageCollector.report(
                     ERROR,
-                    e.message + e.stackTraceToString(),
+                    e.stackTraceToString(),
                     CompilerMessageLocation.create(
                         path = e.path,
                         line = e.line,
