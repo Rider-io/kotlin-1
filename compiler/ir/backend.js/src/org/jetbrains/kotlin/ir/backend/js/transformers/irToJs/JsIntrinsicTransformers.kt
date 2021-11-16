@@ -120,7 +120,7 @@ class JsIntrinsicTransformers(backendContext: JsIrBackendContext) {
                 typeArgument.getClassRef(context)
             }
 
-            addIfNotNull(intrinsics.jsCode) { call, context ->
+            addIfNotNull(intrinsics.jsCode) { call, _ ->
                 compilationException(
                     "Should not be called",
                     call
