@@ -21,7 +21,6 @@ import org.jetbrains.kotlin.ir.expressions.impl.IrFunctionExpressionImpl
 import org.jetbrains.kotlin.ir.types.IrSimpleType
 import org.jetbrains.kotlin.ir.types.classOrNull
 import org.jetbrains.kotlin.ir.util.file
-import org.jetbrains.kotlin.ir.util.render
 import org.jetbrains.kotlin.ir.visitors.IrElementTransformerVoid
 import org.jetbrains.kotlin.ir.visitors.transformChildrenVoid
 import org.jetbrains.kotlin.name.Name
@@ -105,8 +104,7 @@ class PropertyReferenceLowering(private val context: JsIrBackendContext) : BodyL
             val getter = reference.getter?.owner
                 ?: compilationException(
                     "Getter expected",
-                    reference,
-                    context
+                    reference
                 )
             return buildAccessorLambda(factory, getter, reference, boundValueParameters)
         }
@@ -125,16 +123,14 @@ class PropertyReferenceLowering(private val context: JsIrBackendContext) : BodyL
                 reference.setter -> "set"
                 else -> compilationException(
                     "Unexpected accessor",
-                    accessor,
-                    context
+                    accessor
                 )
             }
 
             val classifier = (reference.type as IrSimpleType).classOrNull
                 ?: compilationException(
                     "Simple type expected",
-                    reference,
-                    context
+                    reference
                 )
             val supperAccessor =
                 classifier.owner.declarations.filterIsInstance<IrSimpleFunction>().single { it.name.asString() == superName }

@@ -61,13 +61,11 @@ class IrElementToJsExpressionTransformer : BaseIrElementToJsNodeTransformer<JsEx
             is IrConstKind.Int -> JsIntLiteral(kind.valueOf(expression))
             is IrConstKind.Long -> compilationException(
                 "Long const should have been lowered at this point",
-                expression,
-                context.currentFile
+                expression
             )
             is IrConstKind.Char -> compilationException(
                 "Char const should have been lowered at this point",
-                expression,
-                context.currentFile
+                expression
             )
             is IrConstKind.Float -> JsDoubleLiteral(toDoubleConst(kind.valueOf(expression)))
             is IrConstKind.Double -> JsDoubleLiteral(kind.valueOf(expression))
@@ -110,8 +108,7 @@ class IrElementToJsExpressionTransformer : BaseIrElementToJsNodeTransformer<JsEx
             val receiver = expression.receiver?.accept(this, context)
                 ?: compilationException(
                     "Expect expression.receiver to not be null",
-                    expression,
-                    context.currentFile
+                    expression
                 )
             return JsNameRef(field.getJsNameOrKotlinName().identifier, receiver).withSource(expression, context)
         }
@@ -221,14 +218,12 @@ class IrElementToJsExpressionTransformer : BaseIrElementToJsNodeTransformer<JsEx
                 expression.getValueArgument(0)
                     ?: compilationException(
                         "JsCode is expected",
-                        expression,
-                        context.currentFile
+                        expression
                     ),
                 context.staticContext.backendContext
             ) ?: compilationException(
                 "Cannot compute js code",
-                expression,
-                context.currentFile
+                expression
             )
 
             if (statements.isEmpty()) return JsPrefixOperation(JsUnaryOperator.VOID, JsIntLiteral(3)) // TODO: report warning or even error
@@ -275,8 +270,7 @@ class IrElementToJsExpressionTransformer : BaseIrElementToJsNodeTransformer<JsEx
             IrTypeOperator.REINTERPRET_CAST -> expression.argument.accept(this, data)
             else -> compilationException(
                 "All type operator calls except REINTERPRET_CAST should be lowered at this point",
-                expression,
-                data.currentFile
+                expression
             )
         }.withSource(expression, data)
     }
@@ -334,8 +328,7 @@ class IrElementToJsExpressionTransformer : BaseIrElementToJsNodeTransformer<JsEx
 
             else -> compilationException(
                 "Unexpected operator ${expression.operator}",
-                expression,
-                data.currentFile
+                expression
             )
         }.withSource(expression, data)
 
@@ -345,8 +338,7 @@ class IrElementToJsExpressionTransformer : BaseIrElementToJsNodeTransformer<JsEx
             is IrSimpleFunction -> data.getNameForStaticFunction(function)
             else -> compilationException(
                 "Unexpected function kind",
-                expression,
-                data.currentFile
+                expression
             )
         }
         return JsNameRef(name).withSource(expression, data)

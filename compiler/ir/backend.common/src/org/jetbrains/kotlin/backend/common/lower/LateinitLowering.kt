@@ -185,8 +185,7 @@ class LateinitUsageLowering(val backendContext: CommonBackendContext) : BodyLowe
                     val backingField = property?.backingField
                         ?: compilationException(
                             "Lateinit property is supposed to have a backing field",
-                            expression,
-                            backendContext
+                            expression
                         )
                     // This is not the right scope symbol, but we don't use it anyway.
                     backendContext.createIrBuilder(it.symbol, expression.startOffset, expression.endOffset).run {

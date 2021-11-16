@@ -144,8 +144,7 @@ private class Transformer(
                     is IndexedGetHeaderInfo ->
                         compilationException(
                             "Unexpected IndexedGetHeaderInfo returned by RangeHeaderInfoBuilder",
-                            argument,
-                            this@Transformer.context
+                            argument
                         )
                 }
 

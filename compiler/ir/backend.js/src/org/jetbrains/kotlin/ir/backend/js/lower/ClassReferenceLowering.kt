@@ -19,7 +19,6 @@ import org.jetbrains.kotlin.ir.symbols.IrClassifierSymbol
 import org.jetbrains.kotlin.ir.symbols.IrSimpleFunctionSymbol
 import org.jetbrains.kotlin.ir.symbols.IrTypeParameterSymbol
 import org.jetbrains.kotlin.ir.types.*
-import org.jetbrains.kotlin.ir.util.dumpKotlinLike
 import org.jetbrains.kotlin.ir.util.isFunction
 import org.jetbrains.kotlin.ir.util.isThrowable
 import org.jetbrains.kotlin.ir.visitors.transformChildrenVoid
@@ -160,7 +159,7 @@ class ClassReferenceLowering(val context: JsCommonBackendContext) : BodyLowering
             return createSimpleKType(type, visitedTypeParams)
         if (type is IrDynamicType)
             return createDynamicType()
-        compilationException("Unexpected type", type, context)
+        compilationException("Unexpected type", type)
     }
 
     private fun createDynamicType(): IrExpression {

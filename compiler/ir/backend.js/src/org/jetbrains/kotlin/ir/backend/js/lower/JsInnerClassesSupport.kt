@@ -19,8 +19,6 @@ import org.jetbrains.kotlin.ir.builders.declarations.buildField
 import org.jetbrains.kotlin.ir.builders.declarations.buildValueParameter
 import org.jetbrains.kotlin.ir.declarations.*
 import org.jetbrains.kotlin.ir.util.defaultType
-import org.jetbrains.kotlin.ir.util.dump
-import org.jetbrains.kotlin.ir.util.file
 import org.jetbrains.kotlin.name.Name
 
 class JsInnerClassesSupport(mapping: JsMapping, private val irFactory: IrFactory) : InnerClassesSupport {
@@ -31,16 +29,14 @@ class JsInnerClassesSupport(mapping: JsMapping, private val irFactory: IrFactory
     override fun getOuterThisField(innerClass: IrClass): IrField =
         if (!innerClass.isInner) compilationException(
             "Class is not inner",
-            innerClass,
-            innerClass.file
+            innerClass
         )
         else {
             outerThisFieldSymbols.getOrPut(innerClass) {
                 val outerClass = innerClass.parent as? IrClass
                     ?: compilationException(
                         "No containing class for inner class",
-                        innerClass,
-                        innerClass.file
+                        innerClass
                     )
 
                 irFactory.buildField {

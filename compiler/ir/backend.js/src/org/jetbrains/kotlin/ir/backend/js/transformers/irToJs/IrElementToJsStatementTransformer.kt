@@ -138,14 +138,12 @@ class IrElementToJsStatementTransformer : BaseIrElementToJsNodeTransformer<JsSta
                 expression.getValueArgument(0)
                     ?: compilationException(
                         "JsCode is expected",
-                        expression,
-                        data.currentFile
+                        expression
                     ),
                 data.staticContext.backendContext
             ) ?: compilationException(
                 "Cannot compute js code",
-                expression,
-                data.currentFile
+                expression
             )
             return when (statements.size) {
                 0 -> JsEmpty

@@ -219,8 +219,7 @@ class LocalDeclarationsLowering(
             val receiver = (if (member is IrFunction) member.dispatchReceiverParameter else classContext.declaration.thisReceiver)
                 ?: compilationException(
                     "No dispatch receiver parameter",
-                    member,
-                    member.file
+                    member
                 )
             return IrGetFieldImpl(
                 startOffset, endOffset, field.symbol, valueDeclaration.type,
@@ -420,8 +419,7 @@ class LocalDeclarationsLowering(
                             newParameterToCaptured[newValueParameterDeclaration]
                                 ?: compilationException(
                                     "Non-mapped parameter $newValueParameterDeclaration",
-                                    oldExpression,
-                                    context
+                                    oldExpression
                                 )
 
                         val capturedValue = capturedValueSymbol.owner
@@ -527,8 +525,7 @@ class LocalDeclarationsLowering(
                 val blockBody = constructorContext.declaration.body as? IrBlockBody
                     ?: compilationException(
                         "Unexpected constructor body: ${constructorContext.declaration.body}",
-                        constructorContext.declaration,
-                        context
+                        constructorContext.declaration
                     )
 
                 // NOTE: It's important to set the fields for captured values in the same order as the arguments,
@@ -645,8 +642,7 @@ class LocalDeclarationsLowering(
             if (oldDeclaration.dispatchReceiverParameter != null) {
                 compilationException(
                     "local functions must not have dispatch receiver",
-                    oldDeclaration,
-                    context
+                    oldDeclaration
                 )
             }
 
@@ -775,15 +771,13 @@ class LocalDeclarationsLowering(
             oldDeclaration.dispatchReceiverParameter?.run {
                 compilationException(
                     "Local class constructor can't have dispatch receiver",
-                    oldDeclaration,
-                    context
+                    oldDeclaration
                 )
             }
             oldDeclaration.extensionReceiverParameter?.run {
                 compilationException(
                     "Local class constructor can't have extension receiver",
-                    oldDeclaration,
-                    context
+                    oldDeclaration
                 )
             }
 
@@ -901,8 +895,7 @@ class LocalDeclarationsLowering(
                 val parentFun = parent as? IrSimpleFunction
                     ?: compilationException(
                         "Extension receiver parent is not a simple function",
-                        parent,
-                        context
+                        parent
                     )
                 val correspondingProperty = parentFun.safeAs<IrSimpleFunction>()?.correspondingPropertySymbol?.owner
                 return when {

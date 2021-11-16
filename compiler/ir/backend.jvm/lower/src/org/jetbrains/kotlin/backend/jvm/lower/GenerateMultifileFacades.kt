@@ -61,8 +61,8 @@ internal val generateMultifileFacadesPhase = makeCustomPhase<JvmBackendContext, 
             generateMultifileFacades(input, context, shouldGeneratePartHierarchy, functionDelegates)
         )
 
-        UpdateFunctionCallSites(functionDelegates).lower(input, context)
-        UpdateConstantFacadePropertyReferences(context, shouldGeneratePartHierarchy).lower(input, context)
+        UpdateFunctionCallSites(functionDelegates).lower(input)
+        UpdateConstantFacadePropertyReferences(context, shouldGeneratePartHierarchy).lower(input)
 
         context.multifileFacadesToAdd.clear()
 

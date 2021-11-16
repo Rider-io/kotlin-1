@@ -94,8 +94,7 @@ class JsIntrinsicTransformers(backendContext: JsIrBackendContext) {
                 typeArgument?.getClassRef(context)
                     ?: compilationException(
                         "Type argument of jsClass must be statically known class",
-                        typeArgument,
-                        context.currentFile
+                        typeArgument
                     )
             }
 
@@ -124,8 +123,7 @@ class JsIntrinsicTransformers(backendContext: JsIrBackendContext) {
             addIfNotNull(intrinsics.jsCode) { call, context ->
                 compilationException(
                     "Should not be called",
-                    call,
-                    context.currentFile
+                    call
                 )
             }
 

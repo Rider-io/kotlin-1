@@ -117,9 +117,7 @@ private class FileLoweringPhaseAdapter<Context : CommonBackendContext>(
     private val lowering: (Context) -> FileLoweringPass
 ) : SameTypeCompilerPhase<Context, IrFile> {
     override fun invoke(phaseConfig: PhaseConfig, phaserState: PhaserState<IrFile>, context: Context, input: IrFile): IrFile {
-        context.currentFile = input
         lowering(context).lower(input)
-        context.currentFile = null
         return input
     }
 }
@@ -145,7 +143,7 @@ private class ModuleLoweringPhaseAdapter<Context : CommonBackendContext>(
     override fun invoke(
         phaseConfig: PhaseConfig, phaserState: PhaserState<IrModuleFragment>, context: Context, input: IrModuleFragment
     ): IrModuleFragment {
-        lowering(context).lower(input, context)
+        lowering(context).lower(input)
         return input
     }
 }

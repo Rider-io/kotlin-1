@@ -268,8 +268,7 @@ private class CallsiteRedirectionTransformer(private val context: JsIrBackendCon
                 if (es6mode) mapping.secondaryConstructorToDelegate[target]
                     ?: compilationException(
                         "Not found IrFunction for secondary ctor",
-                        expression,
-                        context
+                        expression
                     )
                 else buildConstructorFactory(target, target.parentAsClass)
             }
@@ -288,8 +287,7 @@ private class CallsiteRedirectionTransformer(private val context: JsIrBackendCon
                 if (es6mode) mapping.secondaryConstructorToDelegate[target]
                     ?: compilationException(
                         "Not found IrFunction for secondary ctor",
-                        expression,
-                        context
+                        expression
                     )
                 else buildConstructorDelegate(target, klass)
             }

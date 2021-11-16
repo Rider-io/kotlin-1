@@ -135,7 +135,6 @@ fun validateNestedExternalDeclarations(declaration: IrDeclaration, isExternalTop
             compilationException(
                 "isExternal validation failed for declaration",
                 declaration,
-                declaration.file,
             )
         }
     }

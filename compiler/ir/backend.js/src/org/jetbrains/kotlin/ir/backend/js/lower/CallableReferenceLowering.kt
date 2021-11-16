@@ -124,8 +124,7 @@ class CallableReferenceLowering(private val context: CommonBackendContext) : Bod
         private val superFunctionInterface: IrClass = referenceType.classOrNull?.owner
             ?: compilationException(
                 "Expected functional type",
-                reference,
-                context
+                reference
             )
         private val isKReference = superFunctionInterface.name.identifier[0] == 'K'
 
@@ -330,7 +329,7 @@ class CallableReferenceLowering(private val context: CommonBackendContext) : Bod
                             JsStatementOrigins.CALLABLE_REFERENCE_INVOKE
                         )
                     else ->
-                        compilationException("unknown function kind", callee, context)
+                        compilationException("unknown function kind", callee)
                 }
             }
 
@@ -420,8 +419,7 @@ class CallableReferenceLowering(private val context: CommonBackendContext) : Bod
             val supperGetter = superProperty.getter
                 ?: compilationException(
                     "Expected getter for KFunction.name property",
-                    superProperty,
-                    context
+                    superProperty
                 )
 
             val nameProperty = clazz.addProperty() {

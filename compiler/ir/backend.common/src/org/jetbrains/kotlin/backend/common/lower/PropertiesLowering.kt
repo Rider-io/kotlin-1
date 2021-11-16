@@ -55,8 +55,7 @@ class PropertiesLowering : DeclarationTransformer {
                 override fun visitProperty(declaration: IrProperty) {
                     compilationException(
                         "No properties should remain at this stage",
-                        declaration,
-                        irFile
+                        declaration
                     )
                 }
             })

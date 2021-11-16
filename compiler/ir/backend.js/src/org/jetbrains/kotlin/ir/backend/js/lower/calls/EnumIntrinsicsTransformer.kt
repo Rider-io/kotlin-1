@@ -30,8 +30,7 @@ class EnumIntrinsicsTransformer(private val context: JsIrBackendContext) : Calls
         if (staticMethod == null || !staticMethod.isStaticMethodOfClass)
             compilationException(
                 "Enum class should have static method for ${call.symbol.owner.name}",
-                call,
-                context
+                call
             )
 
         return irCall(call, staticMethod.symbol)

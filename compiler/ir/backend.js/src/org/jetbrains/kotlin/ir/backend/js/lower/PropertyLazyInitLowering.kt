@@ -22,7 +22,6 @@ import org.jetbrains.kotlin.ir.builders.declarations.buildField
 import org.jetbrains.kotlin.ir.declarations.*
 import org.jetbrains.kotlin.ir.declarations.persistent.PersistentIrElementBase
 import org.jetbrains.kotlin.ir.expressions.*
-import org.jetbrains.kotlin.ir.util.file
 import org.jetbrains.kotlin.ir.util.hasAnnotation
 import org.jetbrains.kotlin.name.Name
 import kotlin.collections.component1
@@ -270,8 +269,7 @@ private val IrDeclaration.correspondingProperty: IrProperty?
             }
             else -> compilationException(
                 "Can be only IrProperty, IrSimpleFunction or IrField",
-                this,
-                this.file
+                this
             )
         }
     }

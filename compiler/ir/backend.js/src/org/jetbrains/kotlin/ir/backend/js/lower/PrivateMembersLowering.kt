@@ -122,7 +122,6 @@ class PrivateMembersLowering(val context: JsIrBackendContext) : DeclarationTrans
                 else -> compilationException(
                     "Unexpected body kind",
                     it,
-                    context,
                 )
             }
         }

@@ -55,8 +55,6 @@ class WasmBackendContext(
 
     override val mapping = JsMapping(irFactory)
 
-    override var currentFile: IrFile? = null
-
     override val coroutineSymbols =
         JsCommonCoroutineSymbols(symbolTable, module,this)
 

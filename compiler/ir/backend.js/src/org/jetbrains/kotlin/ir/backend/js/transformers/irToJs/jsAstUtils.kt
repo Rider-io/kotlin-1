@@ -162,8 +162,7 @@ fun translateCall(
                 property.setter -> jsAssignment(nameRef, arguments.single())
                 else -> compilationException(
                     "Function must be an accessor of corresponding property",
-                    function,
-                    context.currentFile
+                    function
                 )
             }
         }

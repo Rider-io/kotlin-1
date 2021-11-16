@@ -56,7 +56,7 @@ class ConstTransformer(private val context: JsIrBackendContext) : IrElementTrans
 
                     uLongClassSymbol -> lowerConst(uLongClassSymbol, { _, _, _, v -> createLong(v) }, IrConstKind.Long.valueOf(expression))
 
-                    else -> compilationException("Unknown unsigned type", expression, context)
+                    else -> compilationException("Unknown unsigned type", expression)
                 }
             }
             return when {

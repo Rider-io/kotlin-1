@@ -56,8 +56,7 @@ open class LocalClassPopupLowering(
                     is IrDeclarationContainer -> extractedLocalClasses.add(ExtractedLocalClass(declaration, newContainer, extractedUnder))
                     else -> compilationException(
                         "Inexpected container type",
-                        newContainer,
-                        context.ir.context
+                        newContainer
                     )
                 }
 
@@ -81,8 +80,7 @@ open class LocalClassPopupLowering(
                 }
                 else -> compilationException(
                     "Inexpected container type",
-                    newContainer,
-                    context.ir.context
+                    newContainer
                 )
             }
             context.recordExtractedLocalClasses(local)

@@ -34,7 +34,7 @@ abstract class AbstractValueUsageLowering(val context: JsCommonBackendContext) :
 
         val replacement = container.transform(this, null) as IrDeclaration
 
-        if (container !== replacement) compilationException("Declaration has changed", container, context)
+        if (container !== replacement) compilationException("Declaration has changed", container)
 
         // TODO: Track & insert parents for temporary variables
         irBody.patchDeclarationParents(container as? IrDeclarationParent ?: container.parent)

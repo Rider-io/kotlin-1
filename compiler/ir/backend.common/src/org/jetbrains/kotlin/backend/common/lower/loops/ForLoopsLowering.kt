@@ -323,8 +323,7 @@ private class RangeLoopTransformer(
                 initializerCall == null -> initializerCall = candidateCall
                 else -> compilationException(
                     "Multiple initializer calls found. First: ${initializerCall!!.render()}\nSecond: ${candidateCall.render()}",
-                    expression,
-                    context
+                    expression
                 )
             }
         }

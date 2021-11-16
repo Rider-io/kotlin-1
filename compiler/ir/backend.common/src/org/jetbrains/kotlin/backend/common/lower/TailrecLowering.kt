@@ -159,8 +159,7 @@ private class BodyTransformer(
                 val originalDefaultValue = parameter.defaultValue?.expression
                     ?: compilationException(
                         "no argument specified for $parameter",
-                        expression,
-                        this@BodyTransformer.lowering.context.ir.context
+                        expression
                     )
                 irTemporary(originalDefaultValue.deepCopyWithVariables().patchDeclarationParents(parent).transform(remapper, null))
             }

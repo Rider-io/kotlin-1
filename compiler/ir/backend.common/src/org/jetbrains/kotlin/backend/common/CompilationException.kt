@@ -7,7 +7,6 @@ package org.jetbrains.kotlin.backend.common
 
 import org.jetbrains.kotlin.ir.IrElement
 import org.jetbrains.kotlin.ir.UNDEFINED_OFFSET
-import org.jetbrains.kotlin.ir.builders.IrGeneratorContext
 import org.jetbrains.kotlin.ir.declarations.IrFile
 import org.jetbrains.kotlin.ir.declarations.path
 import org.jetbrains.kotlin.ir.types.IrType
@@ -15,8 +14,8 @@ import org.jetbrains.kotlin.ir.util.dumpKotlinLike
 
 class CompilationException(
     message: String,
-    private val file: IrFile?,
-    private val ir: IrHolder<Any?>,
+    var file: IrFile?,
+    val ir: Any?, /* IrElement | IrType */
     cause: Throwable? = null
 ) : RuntimeException(
     message,
@@ -26,76 +25,40 @@ class CompilationException(
         get() = "Back-end (JS): Please report this problem.\nProblem with `$content`.\nDetails: " + super.message
 
     val line: Int
-        get() = file?.fileEntry?.getLineNumber((ir.value as? IrElement)?.startOffset ?: UNDEFINED_OFFSET)?.plus(1) ?: -1
+        get() = file?.fileEntry?.getLineNumber((ir as? IrElement)?.startOffset ?: UNDEFINED_OFFSET)?.plus(1) ?: -1
 
     val column: Int
-        get() = file?.fileEntry?.getColumnNumber((ir.value as? IrElement)?.startOffset ?: UNDEFINED_OFFSET)?.plus(1) ?: -1
+        get() = file?.fileEntry?.getColumnNumber((ir as? IrElement)?.startOffset ?: UNDEFINED_OFFSET)?.plus(1) ?: -1
 
     val path: String
-        get() = file?.path ?: "<unknown>"
+        get() = file?.path ?: "<unknown-path>"
 
     val content: String
-        get() = ir.dumpKotlinLike()
-}
-
-sealed class IrHolder<out T>(val value: T) {
-    abstract fun dumpKotlinLike(): String
-
-    class IrElementHolder(value: IrElement) : IrHolder<IrElement>(value) {
-        override fun dumpKotlinLike(): String =
-            value.dumpKotlinLike()
-    }
-
-    class IrTypeHolder(value: IrType?) : IrHolder<IrType?>(value) {
-        override fun dumpKotlinLike(): String =
-            value?.dumpKotlinLike() ?: ""
-    }
+        get() = when (ir) {
+            is IrElement -> ir.dumpKotlinLike()
+            is IrType -> ir.dumpKotlinLike()
+            else -> "<unknown-content>"
+        }
 }
 
 fun compilationException(
     message: String,
-    element: IrElement,
-    context: CommonBackendContext
+    element: IrElement
 ): Nothing {
     throw CompilationException(
         message,
-        context.currentFile,
-        IrHolder.IrElementHolder(element)
+        null,
+        element
     )
 }
 
 fun compilationException(
     message: String,
-    type: IrType?,
-    context: CommonBackendContext
+    type: IrType?
 ): Nothing {
     throw CompilationException(
         message,
-        context.currentFile,
-        IrHolder.IrTypeHolder(type)
-    )
-}
-
-fun compilationException(
-    message: String,
-    element: IrElement,
-    file: IrFile,
-): Nothing {
-    throw CompilationException(
-        message,
-        file,
-        IrHolder.IrElementHolder(element)
-    )
-}
-
-fun compilationException(
-    message: String,
-    type: IrType?,
-    file: IrFile,
-): Nothing {
-    throw CompilationException(
-        message,
-        file,
-        IrHolder.IrTypeHolder(type)
+        null,
+        type,
     )
 }

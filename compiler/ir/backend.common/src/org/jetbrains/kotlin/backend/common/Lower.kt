@@ -68,12 +68,21 @@ interface BodyAndScriptBodyLoweringPass : BodyLoweringPass {
 }
 
 fun FileLoweringPass.lower(
-    moduleFragment: IrModuleFragment,
-    context: CommonBackendContext
+    moduleFragment: IrModuleFragment
 ) = moduleFragment.files.forEach {
-    context.currentFile = it
-    lower(it)
-    context.currentFile = null
+    try {
+        lower(it)
+    } catch (e: CompilationException) {
+        e.file = it
+        throw e
+    } catch (e: Throwable) {
+        throw CompilationException(
+            "Internal error in file lowering",
+            it,
+            null,
+            cause = e,
+        )
+    }
 }
 
 fun ClassLoweringPass.runOnFilePostfix(irFile: IrFile) {
@@ -137,11 +146,14 @@ fun BodyLoweringPass.runOnFilePostfix(
     for (declaration in ArrayList(irFile.declarations)) {
         try {
             declaration.accept(visitor, null)
+        } catch (e: CompilationException) {
+            e.file = irFile
+            throw e
         } catch (e: Throwable) {
             throw CompilationException(
-                "Internal error in body lowering\n",
+                "Internal error in body lowering",
                 irFile,
-                IrHolder.IrElementHolder(declaration),
+                declaration,
                 cause = e
             )
         }
@@ -233,11 +245,14 @@ interface DeclarationTransformer : FileLoweringPass {
             try {
                 declaration.acceptVoid(visitor)
                 transformFlatRestricted(declaration)
+            } catch (e: CompilationException) {
+                e.file = irFile
+                throw e
             } catch (e: Throwable) {
                 throw CompilationException(
-                    "Internal error in declaration transformer\n",
+                    "Internal error in declaration transformer",
                     irFile,
-                    IrHolder.IrElementHolder(declaration),
+                    declaration,
                     cause = e
                 )
             }

@@ -42,8 +42,6 @@ interface CommonBackendContext : BackendContext, LoggingContext {
 
     val mapping: Mapping
 
-    var currentFile: IrFile?
-
     // Adjust internal structures after a deep copy of some declarations.
     fun handleDeepCopy(
         fileSymbolMap: MutableMap<IrFileSymbol, IrFileSymbol>,

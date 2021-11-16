@@ -22,7 +22,6 @@ import org.jetbrains.kotlin.ir.expressions.*
 import org.jetbrains.kotlin.ir.expressions.impl.*
 import org.jetbrains.kotlin.ir.transformStatement
 import org.jetbrains.kotlin.ir.types.IrType
-import org.jetbrains.kotlin.ir.util.dump
 import org.jetbrains.kotlin.ir.util.patchDeclarationParents
 import org.jetbrains.kotlin.ir.util.transformFlat
 import org.jetbrains.kotlin.ir.visitors.IrElementTransformer
@@ -623,16 +622,14 @@ class BlockDecomposerTransformer(
             expression.receiver = newArguments[0]
                 ?: compilationException(
                     "No new receiver in destructured composite",
-                    expression,
-                    context
+                    expression
                 )
 
             for (i in expression.arguments.indices) {
                 expression.arguments[i] = newArguments[i + 1]
                     ?: compilationException(
                         "No argument #$i in destructured composite",
-                        expression,
-                        context
+                        expression
                     )
             }
 

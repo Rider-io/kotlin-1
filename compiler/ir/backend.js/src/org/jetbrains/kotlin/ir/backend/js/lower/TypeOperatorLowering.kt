@@ -266,8 +266,7 @@ class TypeOperatorLowering(val context: JsIrBackendContext) : BodyLoweringPass {
                     (toType.classifierOrNull as? IrTypeParameterSymbol)
                         ?: compilationException(
                             "expected type parameter, but $toType",
-                            argument,
-                            context
+                            argument
                         )
 
                 val typeParameter = typeParameterSymbol.owner
@@ -379,8 +378,7 @@ class TypeOperatorLowering(val context: JsIrBackendContext) : BodyLoweringPass {
                     }
                     else -> compilationException(
                         "Unreachable execution (coercion to non-Integer type)",
-                        expression,
-                        context
+                        expression
                     )
                 }
 

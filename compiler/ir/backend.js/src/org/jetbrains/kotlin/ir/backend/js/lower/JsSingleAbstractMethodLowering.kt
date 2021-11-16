@@ -12,7 +12,6 @@ import org.jetbrains.kotlin.backend.common.compilationException
 import org.jetbrains.kotlin.backend.common.lower.SingleAbstractMethodLowering
 import org.jetbrains.kotlin.descriptors.DescriptorVisibilities
 import org.jetbrains.kotlin.descriptors.DescriptorVisibility
-import org.jetbrains.kotlin.ir.backend.js.JsIrBackendContext
 import org.jetbrains.kotlin.ir.declarations.*
 import org.jetbrains.kotlin.ir.expressions.IrBody
 import org.jetbrains.kotlin.ir.expressions.IrTypeOperatorCall
@@ -22,7 +21,6 @@ import org.jetbrains.kotlin.ir.types.classOrNull
 import org.jetbrains.kotlin.ir.types.defaultType
 import org.jetbrains.kotlin.ir.util.file
 import org.jetbrains.kotlin.ir.util.parentClassOrNull
-import org.jetbrains.kotlin.ir.util.render
 
 class JsSingleAbstractMethodLowering(context: CommonBackendContext) : SingleAbstractMethodLowering(context), BodyLoweringPass {
 
@@ -62,6 +60,6 @@ class JsSingleAbstractMethodLowering(context: CommonBackendContext) : SingleAbst
         // And since there is a to-do in common SingleAbstractMethodLowering (at function visitTypeOperator),
         // we don't have to be more saint than a pope here.
         return typeOperand.classOrNull?.defaultType
-            ?: compilationException("Unsupported SAM conversion", typeOperand, context)
+            ?: compilationException("Unsupported SAM conversion", typeOperand)
     }
 }

@@ -62,7 +62,7 @@ class InteropCallableReferenceLowering(val context: JsIrBackendContext) : BodyLo
     }
 
     override fun lower(irBody: IrBody, container: IrDeclaration) {
-        compilationException("Unreachable", irBody, context)
+        compilationException("Unreachable", irBody)
     }
 
     private inner class CallableReferenceClassTransformer(private val ctorToFactoryMap: MutableMap<IrConstructorSymbol, IrSimpleFunctionSymbol>) : IrElementTransformerVoid() {
@@ -113,8 +113,7 @@ class InteropCallableReferenceLowering(val context: JsIrBackendContext) : BodyLo
         val body = invokeFun.body
             ?: compilationException(
                 "invoke() method has to have a body",
-                invokeFun,
-                context
+                invokeFun
             )
 
         fun IrExpression.getValue(d: IrValueSymbol): IrExpression = IrGetValueImpl(startOffset, endOffset, d)
@@ -189,8 +188,7 @@ class InteropCallableReferenceLowering(val context: JsIrBackendContext) : BodyLo
         val statements = constructor.body?.let { it.cast<IrBlockBody>().statements }
             ?: compilationException(
                 "Expecting Body for function ref constructor",
-                constructor,
-                context
+                constructor
             )
 
         val fieldSetters = statements.filterIsInstance<IrSetField>()
@@ -207,8 +205,7 @@ class InteropCallableReferenceLowering(val context: JsIrBackendContext) : BodyLo
         val body = getter.body?.cast<IrBlockBody>()
             ?: compilationException(
                 "Expected body",
-                getter,
-                context
+                getter
             )
         val statements = body.statements
 
