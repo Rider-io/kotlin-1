@@ -5,10 +5,7 @@
 
 package org.jetbrains.kotlin.backend.common.lower
 
-import org.jetbrains.kotlin.backend.common.BodyLoweringPass
-import org.jetbrains.kotlin.backend.common.CommonBackendContext
-import org.jetbrains.kotlin.backend.common.DeclarationTransformer
-import org.jetbrains.kotlin.backend.common.runOnFilePostfix
+import org.jetbrains.kotlin.backend.common.*
 import org.jetbrains.kotlin.ir.IrElement
 import org.jetbrains.kotlin.ir.IrStatement
 import org.jetbrains.kotlin.ir.declarations.*
@@ -43,7 +40,10 @@ class InitializersLowering(context: CommonBackendContext) : InitializersLowering
                 element.acceptChildren(this, null)
 
             override fun visitClass(declaration: IrClass) =
-                throw AssertionError("class in initializer should have been moved out by LocalClassPopupLowering: ${declaration.render()}")
+                compilationException(
+                    "class in initializer should have been moved out by LocalClassPopupLowering",
+                    declaration
+                )
         }, null)
 
         container.body?.transformChildrenVoid(object : IrElementTransformerVoid() {
