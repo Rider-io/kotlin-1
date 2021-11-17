@@ -122,6 +122,7 @@ class JsIrBackendContext(
         // TODO: what is more clear way reference this getter?
         private val REFLECT_PACKAGE_FQNAME = KOTLIN_PACKAGE_FQN.child(Name.identifier("reflect"))
         private val JS_PACKAGE_FQNAME = KOTLIN_PACKAGE_FQN.child(Name.identifier("js"))
+        private val JS_POLYFILLS_PACKAGE = JS_PACKAGE_FQNAME.child(Name.identifier("polyfill"))
         private val JS_INTERNAL_PACKAGE_FQNAME = JS_PACKAGE_FQNAME.child(Name.identifier("internal"))
 
         // TODO: due to name clash those weird suffix is required, remove it once `MemberNameGenerator` is implemented

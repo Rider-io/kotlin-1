@@ -286,10 +286,11 @@ class IrModuleToJsTransformer(
     private fun generateModuleBody(modules: Iterable<IrModuleFragment>, staticContext: JsStaticContext): List<JsStatement> {
         val statements = mutableListOf<JsStatement>().also {
             if (!generateScriptModule) it += JsStringLiteral("use strict").makeStmt()
-            if (generateGlobalThisPolyfill) it += jsGlobalThisPolyfill()
+//            if (generateGlobalThisPolyfill) it += jsGlobalThisPolyfill()
         }
 
         val preDeclarationBlock = JsGlobalBlock()
+
         val postDeclarationBlock = JsGlobalBlock()
 
         statements.addWithComment("block: pre-declaration", preDeclarationBlock)
