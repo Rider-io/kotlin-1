@@ -108,7 +108,10 @@ class EscapedIdentifiersLowering(context: JsIrBackendContext) : BodyLoweringPass
         override fun visitGetObjectValue(expression: IrGetObjectValue): IrExpression {
             val owner = expression.symbol.owner
 
-            return if (!owner.needToBeWrappedWithGlobalThis()) {
+            return if (
+                !owner.isEffectivelyExternal() ||
+                !owner.needToBeWrappedWithGlobalThis()
+            ) {
                 super.visitGetObjectValue(expression)
             } else {
                 owner.wrapInGlobalThis(expression)
@@ -121,7 +124,7 @@ class EscapedIdentifiersLowering(context: JsIrBackendContext) : BodyLoweringPass
 
             val updatedCall = if (
                 expression.dispatchReceiver != null ||
-                !function.hasStableJsName(context) ||
+                !property.isEffectivelyExternal() ||
                 !property.needToBeWrappedWithGlobalThis()
             ) {
                 expression
