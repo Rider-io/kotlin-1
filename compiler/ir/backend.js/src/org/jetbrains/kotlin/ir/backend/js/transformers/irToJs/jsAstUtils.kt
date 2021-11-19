@@ -51,13 +51,6 @@ fun jsElementAccess(name: String, receiver: JsExpression?): JsExpression =
         JsArrayAccess(receiver, JsStringLiteral(name))
     }
 
-fun jsGlobalVarRef(ref: JsNameRef): JsExpression =
-    if (ref.qualifier != null || ref.ident.isValidES5Identifier()) {
-        ref
-    } else {
-        jsElementAccess(ref.ident, JsNameRef("globalThis"))
-    }
-
 fun jsAssignment(left: JsExpression, right: JsExpression) = JsBinaryOperation(JsBinaryOperator.ASG, left, right)
 
 fun prototypeOf(classNameRef: JsExpression) = JsNameRef(Namer.PROTOTYPE_NAME, classNameRef)
@@ -134,7 +127,7 @@ fun translateCall(
         ) {
             val propertyName = context.getNameForProperty(property)
             val nameRef = when (jsDispatchReceiver) {
-                null -> jsGlobalVarRef(JsNameRef(propertyName))
+                null -> JsNameRef(propertyName)
                 else -> jsElementAccess(propertyName.ident, jsDispatchReceiver)
             }
             return when (function) {
@@ -178,7 +171,7 @@ fun translateCall(
     }
 
     val ref = when (jsDispatchReceiver) {
-        null -> jsGlobalVarRef(JsNameRef(symbolName))
+        null -> JsNameRef(symbolName)
         else -> jsElementAccess(symbolName.ident, jsDispatchReceiver)
     }
 

@@ -334,6 +334,10 @@ class JsIrBackendContext(
     internal fun getJsInternalFunction(name: String): SimpleFunctionDescriptor =
         findFunctions(internalPackage.memberScope, Name.identifier(name)).singleOrNull() ?: error("Internal function '$name' not found")
 
+    internal fun getJsInternalProperty(name: String): PropertyDescriptor =
+        findProperty(internalPackage.memberScope, Name.identifier(name)).singleOrNull() ?: error("Internal function '$name' not found")
+
+
     fun getFunctions(fqName: FqName): List<SimpleFunctionDescriptor> =
         findFunctions(module.getPackage(fqName.parent()).memberScope, fqName.shortName())
 

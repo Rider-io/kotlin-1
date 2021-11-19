@@ -3,9 +3,9 @@
  * Use of this source code is governed by the Apache 2.0 license that can be found in the license/LICENSE.txt file.
  */
 
-package kotlin.polyfills
+package kotlin.js
 
-@JsPolyfill("""
+@JsNativeImplementation("""
 (function() {
     if (typeof globalThis === 'object') return; 
     Object.defineProperty(Object.prototype, '__magic__', {
@@ -18,4 +18,4 @@ package kotlin.polyfills
     delete Object.prototype.__magic__;
 }());
 """)
-external val globalThis: dynamic
+internal external val globalThis: dynamic

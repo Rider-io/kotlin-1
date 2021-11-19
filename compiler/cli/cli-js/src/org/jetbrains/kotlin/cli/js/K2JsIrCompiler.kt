@@ -38,7 +38,6 @@ import org.jetbrains.kotlin.ir.backend.js.*
 import org.jetbrains.kotlin.ir.backend.js.ic.actualizeCacheForModule
 import org.jetbrains.kotlin.ir.backend.js.ic.buildCache
 import org.jetbrains.kotlin.ir.backend.js.ic.checkCaches
-import org.jetbrains.kotlin.ir.backend.js.utils.sanitizeName
 import org.jetbrains.kotlin.ir.backend.js.ic.*
 import org.jetbrains.kotlin.ir.declarations.impl.IrFactoryImpl
 import org.jetbrains.kotlin.ir.backend.js.codegen.JsGenerationGranularity

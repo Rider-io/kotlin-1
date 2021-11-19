@@ -4,7 +4,7 @@ package foo
 var c1 = 0;
 
 fun getInt(): Int? {
-    c1++
+    c1 *= 2
     return c1
 }
 
