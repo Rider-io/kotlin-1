@@ -17,10 +17,7 @@ class CompilationException(
     var file: IrFile?,
     val ir: Any?, /* IrElement | IrType */
     cause: Throwable? = null
-) : RuntimeException(
-    message,
-    cause,
-) {
+) : RuntimeException(message, cause,) {
     override val message: String
         get() = "Back-end (JS): Please report this problem.\nProblem with `$content`.\nDetails: " + super.message
 
@@ -41,24 +38,10 @@ class CompilationException(
         }
 }
 
-fun compilationException(
-    message: String,
-    element: IrElement
-): Nothing {
-    throw CompilationException(
-        message,
-        null,
-        element
-    )
+fun compilationException(message: String, element: IrElement): Nothing {
+    throw CompilationException(message, null, element)
 }
 
-fun compilationException(
-    message: String,
-    type: IrType?
-): Nothing {
-    throw CompilationException(
-        message,
-        null,
-        type,
-    )
+fun compilationException(message: String, type: IrType?): Nothing {
+    throw CompilationException(message, null, type,)
 }
