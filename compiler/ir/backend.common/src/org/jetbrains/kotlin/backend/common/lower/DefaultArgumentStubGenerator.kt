@@ -8,7 +8,6 @@ package org.jetbrains.kotlin.backend.common.lower
 import org.jetbrains.kotlin.backend.common.BodyLoweringPass
 import org.jetbrains.kotlin.backend.common.CommonBackendContext
 import org.jetbrains.kotlin.backend.common.DeclarationTransformer
-import org.jetbrains.kotlin.backend.common.compilationException
 import org.jetbrains.kotlin.backend.common.descriptors.synthesizedString
 import org.jetbrains.kotlin.backend.common.ir.*
 import org.jetbrains.kotlin.descriptors.DescriptorVisibilities
@@ -140,10 +139,7 @@ open class DefaultArgumentStubGenerator(
                         params.forEachIndexed { i, variable -> putValueArgument(i, irGet(variable)) }
                     }
                     is IrSimpleFunction -> +irReturn(dispatchToImplementation(irFunction, newIrFunction, params))
-                    else -> compilationException(
-                        "Unknown function declaration",
-                        irFunction
-                    )
+                    else -> error("Unknown function declaration")
                 }
             }.statements
         }
@@ -247,10 +243,7 @@ open class DefaultArgumentStubGenerator(
         params: MutableList<IrValueDeclaration>
     ): IrExpression {
         assert(needSpecialDispatch(oldIrFunction as IrSimpleFunction))
-        compilationException(
-            "This method should be overridden",
-            oldIrFunction
-        )
+        error("This method should be overridden")
     }
 
     protected open fun defaultArgumentStubVisibility(function: IrFunction) = DescriptorVisibilities.PUBLIC
@@ -594,10 +587,7 @@ private fun IrFunction.generateDefaultsFunctionImpl(
                 isTailrec = false
                 visibility = newVisibility
             }
-        else -> compilationException(
-            "Unknown function type",
-            this
-        )
+        else -> throw IllegalStateException("Unknown function type")
     }
     (newFunction as? IrAttributeContainer)?.copyAttributes(this@generateDefaultsFunctionImpl as? IrAttributeContainer)
     newFunction.copyTypeParametersFrom(this)

@@ -65,11 +65,7 @@ class InnerClassesLowering(val context: BackendContext, private val innerClasses
         val parentThisField = innerClassesSupport.getOuterThisField(irClass)
 
         irConstructor.body?.let { blockBody ->
-            if (blockBody !is IrBlockBody)
-                compilationException(
-                    "Unexpected constructor body",
-                    irConstructor
-                )
+            if (blockBody !is IrBlockBody) throw AssertionError("Unexpected constructor body: ${irConstructor.body}")
 
             loweredConstructor.body = context.irFactory.createBlockBody(blockBody.startOffset, blockBody.endOffset) {
                 context.createIrBuilder(irConstructor.symbol, irConstructor.startOffset, irConstructor.endOffset).apply {
@@ -81,10 +77,7 @@ class InnerClassesLowering(val context: BackendContext, private val innerClasses
                 if (statements.find { it is IrInstanceInitializerCall } == null) {
                     val delegatingConstructorCall =
                         statements.find { it is IrDelegatingConstructorCall } as IrDelegatingConstructorCall?
-                            ?: compilationException(
-                                "Delegating constructor call expected",
-                                irConstructor
-                            )
+                            ?: throw AssertionError("Delegating constructor call expected: ${irConstructor.dump()}")
                     delegatingConstructorCall.apply { dispatchReceiver = IrGetValueImpl(startOffset, endOffset, outerThisParameter.symbol) }
                 }
                 patchDeclarationParents(loweredConstructor)

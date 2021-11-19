@@ -16,18 +16,12 @@ val IrFunction.realOverrideTarget: IrFunction
     get() = when (this) {
         is IrSimpleFunction -> this.realOverrideTarget
         is IrConstructor -> this
-        else -> compilationException(
-            "Unexpected declaration",
-            this
-        )
+        else -> compilationException("Unexpected declaration", this)
     }
 
 val IrSimpleFunction.realOverrideTarget: IrSimpleFunction
     get(): IrSimpleFunction {
         val realOverrides = collectRealOverrides()
         return realOverrides.find { it.modality != Modality.ABSTRACT } ?: realOverrides.firstOrNull()
-        ?: compilationException(
-            "No real override target found",
-            this
-        )
+        ?: compilationException("No real override target found", this)
     }

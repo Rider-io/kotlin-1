@@ -16,7 +16,10 @@
 
 package org.jetbrains.kotlin.backend.common.lower
 
-import org.jetbrains.kotlin.backend.common.*
+import org.jetbrains.kotlin.backend.common.BodyLoweringPass
+import org.jetbrains.kotlin.backend.common.CommonBackendContext
+import org.jetbrains.kotlin.backend.common.DeclarationTransformer
+import org.jetbrains.kotlin.backend.common.getOrPut
 import org.jetbrains.kotlin.backend.common.ir.Symbols
 import org.jetbrains.kotlin.ir.IrStatement
 import org.jetbrains.kotlin.ir.builders.*
@@ -182,11 +185,7 @@ class LateinitUsageLowering(val backendContext: CommonBackendContext) : BodyLowe
                     require(it is IrPropertyReference) { "isInitialized cannot be invoked on ${it.render()}" }
                     val property = it.getter?.owner?.resolveFakeOverride()?.correspondingPropertySymbol?.owner
                     require(property?.isLateinit == true) { "isInitialized invoked on non-lateinit property ${property?.render()}" }
-                    val backingField = property?.backingField
-                        ?: compilationException(
-                            "Lateinit property is supposed to have a backing field",
-                            expression
-                        )
+                    val backingField = property?.backingField ?: error("Lateinit property is supposed to have a backing field")
                     // This is not the right scope symbol, but we don't use it anyway.
                     backendContext.createIrBuilder(it.symbol, expression.startOffset, expression.endOffset).run {
                         irNotEquals(irGetField(it.dispatchReceiver, backendContext.buildOrGetNullableField(backingField)), irNull())

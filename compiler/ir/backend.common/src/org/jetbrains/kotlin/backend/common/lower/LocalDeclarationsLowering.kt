@@ -7,7 +7,6 @@ package org.jetbrains.kotlin.backend.common.lower
 
 import org.jetbrains.kotlin.backend.common.CommonBackendContext
 import org.jetbrains.kotlin.backend.common.BodyAndScriptBodyLoweringPass
-import org.jetbrains.kotlin.backend.common.compilationException
 import org.jetbrains.kotlin.backend.common.descriptors.synthesizedString
 import org.jetbrains.kotlin.backend.common.ir.*
 import org.jetbrains.kotlin.backend.common.lower.inline.isInlineParameter
@@ -217,10 +216,7 @@ class LocalDeclarationsLowering(
             val field = classContext.capturedValueToField[valueDeclaration] ?: return null
             // This lowering does not process accesses to outer `this`.
             val receiver = (if (member is IrFunction) member.dispatchReceiverParameter else classContext.declaration.thisReceiver)
-                ?: compilationException(
-                    "No dispatch receiver parameter",
-                    member
-                )
+                ?: error("No dispatch receiver parameter for ${member.render()}")
             return IrGetFieldImpl(
                 startOffset, endOffset, field.symbol, valueDeclaration.type,
                 receiver = IrGetValueImpl(startOffset, endOffset, receiver.type, receiver.symbol)
@@ -417,10 +413,7 @@ class LocalDeclarationsLowering(
                         // The callee expects captured value as argument.
                         val capturedValueSymbol =
                             newParameterToCaptured[newValueParameterDeclaration]
-                                ?: compilationException(
-                                    "Non-mapped parameter $newValueParameterDeclaration",
-                                    oldExpression
-                                )
+                                ?: throw AssertionError("Non-mapped parameter $newValueParameterDeclaration")
 
                         val capturedValue = capturedValueSymbol.owner
 
@@ -523,10 +516,7 @@ class LocalDeclarationsLowering(
 
             for (constructorContext in constructorsCallingSuper) {
                 val blockBody = constructorContext.declaration.body as? IrBlockBody
-                    ?: compilationException(
-                        "Unexpected constructor body: ${constructorContext.declaration.body}",
-                        constructorContext.declaration
-                    )
+                    ?: throw AssertionError("Unexpected constructor body: ${constructorContext.declaration.body}")
 
                 // NOTE: It's important to set the fields for captured values in the same order as the arguments,
                 // since `AnonymousObjectTransformer` relies on this ordering.
@@ -640,10 +630,7 @@ class LocalDeclarationsLowering(
         private fun createLiftedDeclaration(localFunctionContext: LocalFunctionContext) {
             val oldDeclaration = localFunctionContext.declaration
             if (oldDeclaration.dispatchReceiverParameter != null) {
-                compilationException(
-                    "local functions must not have dispatch receiver",
-                    oldDeclaration
-                )
+                throw AssertionError("local functions must not have dispatch receiver")
             }
 
             val memberOwner = localFunctionContext.ownerForLoweredDeclaration
@@ -769,16 +756,10 @@ class LocalDeclarationsLowering(
             newDeclaration.copyTypeParametersFrom(oldDeclaration)
 
             oldDeclaration.dispatchReceiverParameter?.run {
-                compilationException(
-                    "Local class constructor can't have dispatch receiver",
-                    oldDeclaration
-                )
+                throw AssertionError("Local class constructor can't have dispatch receiver: ${ir2string(oldDeclaration)}")
             }
             oldDeclaration.extensionReceiverParameter?.run {
-                compilationException(
-                    "Local class constructor can't have extension receiver",
-                    oldDeclaration
-                )
+                throw AssertionError("Local class constructor can't have extension receiver: ${ir2string(oldDeclaration)}")
             }
 
             newDeclaration.valueParameters += createTransformedValueParameters(
@@ -893,10 +874,7 @@ class LocalDeclarationsLowering(
         private val IrValueParameter.parentNameSuffixForExtensionReceiver: String
             get() {
                 val parentFun = parent as? IrSimpleFunction
-                    ?: compilationException(
-                        "Extension receiver parent is not a simple function",
-                        parent
-                    )
+                    ?: throw AssertionError("Extension receiver parent is not a simple function: ${parent.render()}")
                 val correspondingProperty = parentFun.safeAs<IrSimpleFunction>()?.correspondingPropertySymbol?.owner
                 return when {
                     correspondingProperty != null ->
