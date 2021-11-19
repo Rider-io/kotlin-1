@@ -19,7 +19,9 @@ class CompilationException(
     cause: Throwable? = null
 ) : RuntimeException(message, cause,) {
     override val message: String
-        get() = "Back-end (JS): Please report this problem.\nProblem with `$content`.\nDetails: " + super.message
+        get() = "Back-end: Please report this problem.\n" +
+                (content?.let { "Problem with `$it`.\n" } ?: "\n") +
+                "Details: " + super.message
 
     val line: Int
         get() = file?.fileEntry?.getLineNumber((ir as? IrElement)?.startOffset ?: UNDEFINED_OFFSET)?.plus(1) ?: -1
@@ -27,14 +29,14 @@ class CompilationException(
     val column: Int
         get() = file?.fileEntry?.getColumnNumber((ir as? IrElement)?.startOffset ?: UNDEFINED_OFFSET)?.plus(1) ?: -1
 
-    val path: String
-        get() = file?.path ?: "<unknown-path>"
+    val path: String?
+        get() = file?.path
 
-    val content: String
+    val content: String?
         get() = when (ir) {
             is IrElement -> ir.dumpKotlinLike()
             is IrType -> ir.dumpKotlinLike()
-            else -> "<unknown-content>"
+            else -> null
         }
 }
 
