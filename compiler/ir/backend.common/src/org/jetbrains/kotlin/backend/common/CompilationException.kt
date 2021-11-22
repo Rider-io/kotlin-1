@@ -7,28 +7,52 @@ package org.jetbrains.kotlin.backend.common
 
 import org.jetbrains.kotlin.ir.IrElement
 import org.jetbrains.kotlin.ir.UNDEFINED_OFFSET
+import org.jetbrains.kotlin.ir.declarations.IrDeclaration
 import org.jetbrains.kotlin.ir.declarations.IrFile
 import org.jetbrains.kotlin.ir.declarations.path
 import org.jetbrains.kotlin.ir.types.IrType
+import org.jetbrains.kotlin.ir.util.SYNTHETIC_OFFSET
 import org.jetbrains.kotlin.ir.util.dumpKotlinLike
+import org.jetbrains.kotlin.ir.util.fileOrNull
 
 class CompilationException(
     message: String,
     var file: IrFile?,
     val ir: Any?, /* IrElement | IrType */
     cause: Throwable? = null
-) : RuntimeException(message, cause,) {
+) : RuntimeException(message, cause) {
     override val message: String
-        get() = "Back-end: Please report this problem.\n" +
-                (path?.let { "$path: ($line, $column)\n" } ?: "") +
-                (content?.let { "Problem with `$it`.\n" } ?: "") +
-                "Details: " + super.message
+        get() = buildString {
+            appendLine("Back-end: Please report this problem https://kotl.in/issue")
+            path?.let { appendLine("$it:$line:$column") }
+            content?.let { appendLine("Problem with `$it`.\n") }
+            appendLine("Details: " + super.message)
+        }
 
     val line: Int
-        get() = file?.fileEntry?.getLineNumber((ir as? IrElement)?.startOffset ?: UNDEFINED_OFFSET)?.plus(1) ?: -1
+        get() {
+            val irStartOffset = irStartOffset
+                ?: return UNDEFINED_OFFSET
+
+            val lineNumber = file?.fileEntry?.getLineNumber(irStartOffset)
+                ?: return UNDEFINED_OFFSET
+
+            return lineNumber + 1
+        }
 
     val column: Int
-        get() = file?.fileEntry?.getColumnNumber((ir as? IrElement)?.startOffset ?: UNDEFINED_OFFSET)?.plus(1) ?: -1
+        get() {
+            val irStartOffset = irStartOffset
+                ?: return UNDEFINED_OFFSET
+
+            val columnNumber = file?.fileEntry?.getColumnNumber(irStartOffset)
+                ?: return UNDEFINED_OFFSET
+
+            return columnNumber + 1
+        }
+
+    private val irStartOffset: Int?
+        get() = (ir as? IrElement)?.startOffset
 
     val path: String?
         get() = file?.path
@@ -46,5 +70,9 @@ fun compilationException(message: String, element: IrElement): Nothing {
 }
 
 fun compilationException(message: String, type: IrType?): Nothing {
-    throw CompilationException(message, null, type,)
+    throw CompilationException(message, null, type)
+}
+
+fun compilationException(message: String, declaration: IrDeclaration): Nothing {
+    throw CompilationException(message, declaration.fileOrNull, declaration)
 }
