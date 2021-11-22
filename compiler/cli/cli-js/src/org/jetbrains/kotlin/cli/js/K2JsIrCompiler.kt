@@ -423,7 +423,8 @@ class K2JsIrCompiler : CLICompiler<K2JSCompilerArguments>() {
                         fullJs = true,
                         dceJs = arguments.irDce,
                         multiModule = arguments.irPerModule,
-                        relativeRequirePath = false
+                        relativeRequirePath = false,
+                        generateGlobalThisPolyfill = configuration.languageVersionSettings.supportsFeature(LanguageFeature.JsAllowInvalidCharsIdentifiersEscaping)
                     )
 
                     transformer.generateModule(ir.allModules)
