@@ -39,8 +39,8 @@ import org.jetbrains.kotlin.ir.backend.js.*
 import org.jetbrains.kotlin.ir.backend.js.codegen.JsGenerationGranularity
 import org.jetbrains.kotlin.ir.backend.js.ic.*
 import org.jetbrains.kotlin.ir.backend.js.transformers.irToJs.IrModuleToJsTransformer
-import org.jetbrains.kotlin.ir.declarations.impl.IrFactoryImpl
 import org.jetbrains.kotlin.ir.backend.js.transformers.irToJs.IrModuleToJsTransformerTmp
+import org.jetbrains.kotlin.ir.declarations.impl.IrFactoryImpl
 import org.jetbrains.kotlin.ir.declarations.persistent.PersistentIrFactory
 import org.jetbrains.kotlin.js.analyzer.JsAnalysisResult
 import org.jetbrains.kotlin.js.config.*
@@ -232,7 +232,10 @@ class K2JsIrCompiler : CLICompiler<K2JSCompilerArguments>() {
             if (updated) {
                 messageCollector.report(INFO, "IC $invalidationType cache building duration: ${System.currentTimeMillis() - start}ms")
             } else {
-                messageCollector.report(INFO, "IC $invalidationType cache up-to-date check duration: ${System.currentTimeMillis() - start}ms")
+                messageCollector.report(
+                    INFO,
+                    "IC $invalidationType cache up-to-date check duration: ${System.currentTimeMillis() - start}ms"
+                )
             }
             return OK
         }
@@ -400,40 +403,39 @@ class K2JsIrCompiler : CLICompiler<K2JSCompilerArguments>() {
                     lowerPerModule = false,//icCaches.isNotEmpty(),
                     granularity = granularity,
                     icCompatibleIr2Js = arguments.irNewIr2Js,
-            )
-
-            val compiledModule: CompilerResult = if (arguments.irNewIr2Js) {
-                val transformer = IrModuleToJsTransformerTmp(
-                    ir.context,
-                    mainCallArguments,
-                    fullJs = true,
-                    dceJs = arguments.irDce,
-                    multiModule = arguments.irPerModule,
-                    relativeRequirePath = false,
                 )
 
-                transformer.generateModule(ir.allModules)
-            } else {
-                val transformer = IrModuleToJsTransformer(
-                    ir.context,
-                    mainCallArguments,
-                    fullJs = true,
-                    dceJs = arguments.irDce,
-                    multiModule = arguments.irPerModule,
-                    relativeRequirePath = false
-                )
+                val compiledModule: CompilerResult = if (arguments.irNewIr2Js) {
+                    val transformer = IrModuleToJsTransformerTmp(
+                        ir.context,
+                        mainCallArguments,
+                        fullJs = true,
+                        dceJs = arguments.irDce,
+                        multiModule = arguments.irPerModule,
+                        relativeRequirePath = false,
+                    )
 
-                transformer.generateModule(ir.allModules)
-            }
+                    transformer.generateModule(ir.allModules)
+                } else {
+                    val transformer = IrModuleToJsTransformer(
+                        ir.context,
+                        mainCallArguments,
+                        fullJs = true,
+                        dceJs = arguments.irDce,
+                        multiModule = arguments.irPerModule,
+                        relativeRequirePath = false
+                    )
 
-            messageCollector.report(INFO, "Executable production duration: ${System.currentTimeMillis() - start}ms")
+                    transformer.generateModule(ir.allModules)
+                }
+
+                messageCollector.report(INFO, "Executable production duration: ${System.currentTimeMillis() - start}ms")
 
 
-
-            val outputs = if (arguments.irDce && !arguments.irDceDriven)
-                compiledModule.outputsAfterDce!!
-            else
-                compiledModule.outputs!!
+                val outputs = if (arguments.irDce && !arguments.irDceDriven)
+                    compiledModule.outputsAfterDce!!
+                else
+                    compiledModule.outputs!!
 
                 outputFile.write(outputs)
                 outputs.dependencies.forEach { (name, content) ->
