@@ -20,7 +20,8 @@ class CompilationException(
 ) : RuntimeException(message, cause,) {
     override val message: String
         get() = "Back-end: Please report this problem.\n" +
-                (content?.let { "Problem with `$it`.\n" } ?: "\n") +
+                (path?.let { "$path: ($line, $column)\n" } ?: "") +
+                (content?.let { "Problem with `$it`.\n" } ?: "") +
                 "Details: " + super.message
 
     val line: Int
