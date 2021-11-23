@@ -11,7 +11,6 @@ import org.jetbrains.kotlin.ir.declarations.IrDeclaration
 import org.jetbrains.kotlin.ir.declarations.IrFile
 import org.jetbrains.kotlin.ir.declarations.path
 import org.jetbrains.kotlin.ir.types.IrType
-import org.jetbrains.kotlin.ir.util.SYNTHETIC_OFFSET
 import org.jetbrains.kotlin.ir.util.dumpKotlinLike
 import org.jetbrains.kotlin.ir.util.fileOrNull
 
@@ -81,4 +80,19 @@ fun compilationException(message: String, declaration: IrDeclaration): Nothing {
         throw CompilationException(message, null, declaration)
     }
     throw CompilationException(message, file, declaration)
+}
+
+fun Throwable.wrapWithCompilationException(
+    message: String,
+    file: IrFile,
+    element: IrElement?
+): CompilationException {
+    return CompilationException(
+        "$message: ${this::class.qualifiedName}: ${this.message}",
+        file,
+        element,
+        cause = this
+    ).apply {
+        stackTrace = this@wrapWithCompilationException.stackTrace
+    }
 }
