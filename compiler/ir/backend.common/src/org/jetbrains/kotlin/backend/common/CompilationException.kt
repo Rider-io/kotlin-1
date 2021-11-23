@@ -17,6 +17,7 @@ import org.jetbrains.kotlin.ir.util.fileOrNull
 
 class CompilationException(
     message: String,
+    // file is not known in any moment, need to set it later in catch to save stacktrace
     var file: IrFile?,
     val ir: Any?, /* IrElement | IrType */
     cause: Throwable? = null
@@ -26,7 +27,7 @@ class CompilationException(
             appendLine("Back-end: Please report this problem https://kotl.in/issue")
             path?.let { appendLine("$it:$line:$column") }
             content?.let { appendLine("Problem with `$it`.\n") }
-            appendLine("Details: " + super.message)
+            append("Details: " + super.message)
         }
 
     val line: Int
@@ -74,5 +75,10 @@ fun compilationException(message: String, type: IrType?): Nothing {
 }
 
 fun compilationException(message: String, declaration: IrDeclaration): Nothing {
-    throw CompilationException(message, declaration.fileOrNull, declaration)
+    val file = try {
+        declaration.fileOrNull
+    } catch (e: Throwable) {
+        throw CompilationException(message, null, declaration)
+    }
+    throw CompilationException(message, file, declaration)
 }

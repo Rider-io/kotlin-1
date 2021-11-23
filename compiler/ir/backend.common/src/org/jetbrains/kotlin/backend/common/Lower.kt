@@ -77,11 +77,13 @@ fun FileLoweringPass.lower(
         throw e
     } catch (e: Throwable) {
         throw CompilationException(
-            "Internal error in file lowering",
+            "Internal error in file lowering: ${e.message}",
             it,
             null,
             cause = e,
-        )
+        ).apply {
+            stackTrace = e.stackTrace
+        }
     }
 }
 
@@ -151,11 +153,13 @@ fun BodyLoweringPass.runOnFilePostfix(
             throw e
         } catch (e: Throwable) {
             throw CompilationException(
-                "Internal error in body lowering",
+                "Internal error in body lowering: ${e.message}",
                 irFile,
                 declaration,
                 cause = e
-            )
+            ).apply {
+                stackTrace = e.stackTrace
+            }
         }
     }
 }
@@ -250,11 +254,13 @@ interface DeclarationTransformer : FileLoweringPass {
                 throw e
             } catch (e: Throwable) {
                 throw CompilationException(
-                    "Internal error in declaration transformer",
+                    "Internal error in declaration transformer: ${e.message}",
                     irFile,
                     declaration,
                     cause = e
-                )
+                ).apply {
+                    stackTrace = e.stackTrace
+                }
             }
         }
     }
