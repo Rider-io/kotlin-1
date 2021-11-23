@@ -77,7 +77,7 @@ fun compilationException(message: String, declaration: IrDeclaration): Nothing {
     val file = try {
         declaration.fileOrNull
     } catch (e: Throwable) {
-        throw CompilationException(message, null, declaration)
+        null
     }
     throw CompilationException(message, file, declaration)
 }
