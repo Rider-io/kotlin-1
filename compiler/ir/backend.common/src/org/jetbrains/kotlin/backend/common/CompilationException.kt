@@ -25,7 +25,7 @@ class CompilationException(
         get() = buildString {
             appendLine("Back-end: Please report this problem https://kotl.in/issue")
             path?.let { appendLine("$it:$line:$column") }
-            content?.let { appendLine("Problem with `$it`.\n") }
+            content?.let { appendLine("Problem with `$it`") }
             append("Details: " + super.message)
         }
 
