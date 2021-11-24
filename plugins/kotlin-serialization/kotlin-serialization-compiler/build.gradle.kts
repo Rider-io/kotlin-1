@@ -6,7 +6,8 @@ plugins {
 }
 
 dependencies {
-    compileOnly(intellijCoreDep()) { includeJars("intellij-core", "asm-all", rootProject = rootProject) }
+    compileOnly(intellijCore())
+    compileOnly(intellijDependency("asm-all"))
 
     compileOnly(project(":compiler:plugin-api"))
     compileOnly(project(":compiler:cli-common"))
@@ -31,7 +32,7 @@ dependencies {
     testImplementation("org.jetbrains.kotlinx:kotlinx-serialization-core:1.2.2")
     testImplementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.2.2")
 
-    testRuntimeOnly(intellijCoreDep()) { includeJars("intellij-core") }
+    testRuntimeOnly(intellijCore())
     testRuntimeOnly(intellijDep()) { includeJars("platform-concurrency") }
 }
 

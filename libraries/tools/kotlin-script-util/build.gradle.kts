@@ -29,7 +29,7 @@ dependencies {
     testImplementation("org.apache.maven:maven-core:3.0.3")
     compileOnly(intellijDep()) { includeJars("util") }
     testApi(intellijDep()) { includeJars("platform-api", "util") }
-    testApi(intellijCoreDep()) { includeJars("intellij-core") }
+    testApi(intellijCore())
 
 }
 

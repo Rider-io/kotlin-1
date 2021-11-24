@@ -7,13 +7,13 @@ dependencies {
     api(project(":core:util.runtime"))
     api(commonDep("javax.inject"))
     compileOnly(kotlinStdlib())
-    compileOnly(intellijCoreDep()) { includeJars("intellij-core") }
+    compileOnly(intellijCore())
     testApi(kotlinStdlib())
     testCompileOnly("org.jetbrains:annotations:13.0")
     testApi(project(":kotlin-test:kotlin-test-jvm"))
     testApi(project(":kotlin-test:kotlin-test-junit"))
     testApi(commonDep("junit:junit"))
-    testCompileOnly(intellijCoreDep()) { includeJars("intellij-core") }
+    testCompileOnly(intellijCore())
     testRuntimeOnly(intellijDep()) { includeJars("trove4j", "util") }
 }
 

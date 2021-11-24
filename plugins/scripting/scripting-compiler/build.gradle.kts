@@ -22,7 +22,7 @@ dependencies {
     api(project(":kotlin-scripting-jvm"))
     api(project(":kotlin-scripting-compiler-impl"))
     api(kotlinStdlib())
-    compileOnly(intellijCoreDep()) { includeJars("intellij-core") }
+    compileOnly(intellijCore())
 
     testApi(project(":compiler:frontend"))
     testApi(project(":compiler:plugin-api"))
@@ -34,7 +34,7 @@ dependencies {
     testApi(projectTests(":compiler:tests-common"))
     testApi(commonDep("junit:junit"))
 
-    testImplementation(intellijCoreDep()) { includeJars("intellij-core") }
+    testImplementation(intellijCore())
     testImplementation(commonDep("org.jetbrains.kotlinx", "kotlinx-coroutines-core"))
     testRuntimeOnly(intellijDep()) { includeJars("jps-model", "jna") }
 

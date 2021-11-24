@@ -14,8 +14,8 @@ dependencies {
     testApi(project(":compiler:backend.js"))
     testApi(project(":compiler:ir.tree.impl"))
     testApi(project(":js:js.engines"))
-    testApi(intellijCoreDep()) { includeJars("intellij-core") }
-    testRuntimeOnly(intellijCoreDep()) { includeJars("intellij-core") }
+    testApi(intellijCore())
+    testRuntimeOnly(intellijCore())
     testRuntimeOnly(intellijDep()) {
         includeJars("idea", "idea_rt", "log4j", "guava", "jdom", rootProject = rootProject)
     }

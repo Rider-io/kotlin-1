@@ -36,10 +36,11 @@ dependencies {
     compileOnly(project(":kotlinx-metadata"))
     shadows(project(":kotlinx-metadata-jvm"))
 
-    compileOnly(intellijCoreDep()) { includeJars("intellij-core", "asm-all", rootProject = rootProject) }
+    compileOnly(intellijCore())
+    compileOnly(intellijDependency("asm-all"))
 
     testApi(intellijDep()) { includeJars("platform-impl", rootProject = rootProject) }
-    testRuntimeOnly(intellijCoreDep()) { includeJars("intellij-core") }
+    testRuntimeOnly(intellijCore())
     testRuntimeOnly(project(":kotlin-compiler"))
 
     testImplementation(commonDep("junit:junit"))

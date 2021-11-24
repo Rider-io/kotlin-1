@@ -15,14 +15,14 @@ dependencies {
     api(project(":compiler:cli-js"))
     api(project(":kotlin-build-common"))
     api(project(":daemon-common"))
-    compileOnly(intellijCoreDep()) { includeJars("intellij-core") }
+    compileOnly(intellijCore())
 
     testApi(commonDep("junit:junit"))
     testApi(project(":kotlin-test:kotlin-test-junit"))
     testApi(kotlinStdlib())
     testApi(projectTests(":kotlin-build-common"))
     testApi(projectTests(":compiler:tests-common"))
-    testApi(intellijCoreDep()) { includeJars("intellij-core") }
+    testApi(intellijCore())
     testApi(intellijDep()) { includeJars("log4j", "jdom") }
     testRuntimeOnly(project(":kotlin-reflect"))
     testRuntimeOnly(project(":core:descriptors.runtime"))

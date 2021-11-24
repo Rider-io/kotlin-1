@@ -433,6 +433,10 @@ allprojects {
         maven("https://packages.jetbrains.team/maven/p/ij/intellij-dependencies")
 
         jcenter()
+
+        maven("https://www.jetbrains.com/intellij-repository/releases")
+        maven("https://www.jetbrains.com/intellij-repository/snapshots")
+        maven("https://cache-redirector.jetbrains.com/intellij-dependencies")
     }
 
     if (path.startsWith(":kotlin-ide.")) {

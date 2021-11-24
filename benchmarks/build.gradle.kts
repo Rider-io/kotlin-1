@@ -13,8 +13,8 @@ dependencies {
     api(project(":compiler:frontend"))
     api(projectTests(":compiler:tests-common"))
     api(project(":compiler:cli"))
-    api(intellijCoreDep()) { includeJars("intellij-core") }
-    api(jpsStandalone()) { includeJars("jps-model") }
+    api(intellijCore())
+    api(jpsModel())
     api(intellijPluginDep("java"))
     api(intellijDep()) { includeIntellijCoreJarDependencies(project) }
     api("org.jetbrains.kotlinx:kotlinx-benchmark-runtime:$benchmarks_version")

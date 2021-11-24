@@ -57,7 +57,7 @@ dependencies {
     testApi(commonDep("com.android.tools:r8"))
     testCompileOnly(project(":kotlin-reflect-api"))
     testCompileOnly(toolsJar())
-    testCompileOnly(intellijCoreDep()) { includeJars("intellij-core") }
+    testCompileOnly(intellijCore())
 
     /*
      * Actually those dependencies are needed only at runtime, but they

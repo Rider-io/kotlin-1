@@ -28,7 +28,7 @@ dependencies {
 
     testRuntimeOnly(project(":kotlinx-metadata-jvm"))
 
-    testApi(intellijCoreDep()) { includeJars("intellij-core") }
+    testApi(intellijCore())
 
     testRuntimeOnly(intellijDep()) { includeJars("platform-concurrency", "platform-objectSerializer", "idea_rt") }
 

@@ -7,7 +7,7 @@ dependencies {
     compileOnly(project(":js:js.ast"))
     compileOnly(project(":js:js.parser")) // TODO remove, required for JSON AST
     compileOnly(project(":js:js.frontend")) // TODO remove
-    compileOnly(intellijCoreDep()) { includeJars("intellij-core") }
+    compileOnly(intellijCore())
     compileOnly(intellijDep()) { includeJars("trove4j") }
 }
 

@@ -63,7 +63,7 @@ dependencies {
     compileOnly("com.android.tools.build:builder-model:3.4.0")
     compileOnly("org.codehaus.groovy:groovy-all:2.4.12")
     compileOnly(project(":kotlin-reflect"))
-    compileOnly(intellijCoreDep()) { includeJars("intellij-core") }
+    compileOnly(intellijCore())
 
     runtimeOnly(project(":kotlin-compiler-embeddable"))
     runtimeOnly(project(":kotlin-annotation-processing-gradle"))

@@ -11,7 +11,7 @@ val robolectricClasspath by configurations.creating
 val parcelizeRuntimeForTests by configurations.creating
 
 dependencies {
-    testApi(intellijCoreDep()) { includeJars("intellij-core") }
+    testApi(intellijCore())
 
     compileOnly(project(":compiler:util"))
     compileOnly(project(":compiler:plugin-api"))
@@ -21,7 +21,7 @@ dependencies {
     compileOnly(project(":compiler:ir.backend.common"))
     compileOnly(project(":compiler:backend.jvm"))
     compileOnly(project(":compiler:ir.tree.impl"))
-    compileOnly(intellijCoreDep()) { includeJars("intellij-core") }
+    compileOnly(intellijCore())
     compileOnly(intellijDep()) { includeJars("asm-all", rootProject = rootProject) }
 
     testApiJUnit5()

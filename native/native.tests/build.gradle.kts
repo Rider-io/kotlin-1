@@ -10,7 +10,7 @@ project.configureJvmToolchain(JdkMajorVersion.JDK_11)
 dependencies {
     testImplementation(kotlinStdlib())
     testImplementation(project(":kotlin-reflect"))
-    testImplementation(intellijCoreDep()) { includeJars("intellij-core") }
+    testImplementation(intellijCore())
     testImplementation(intellijPluginDep("java"))
     testImplementation(project(":kotlin-compiler-runner-unshaded"))
     testImplementation(projectTests(":compiler:tests-common"))

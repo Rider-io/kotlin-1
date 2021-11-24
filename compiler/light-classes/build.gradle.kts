@@ -9,7 +9,7 @@ dependencies {
     api(project(":compiler:backend"))
     api(project(":compiler:frontend"))
     api(project(":compiler:frontend.java"))
-    compileOnly(intellijCoreDep()) { includeJars("intellij-core") }
+    compileOnly(intellijCore())
 
     compileOnly(intellijDep()) { includeJars("platform-core-ui", "platform-util-ui") }
 

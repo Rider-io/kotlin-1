@@ -41,7 +41,7 @@ dependencies {
     testCompileOnly(project(":compiler:cli"))
     testCompileOnly(project(":compiler:cli-js"))
     testCompileOnly(project(":compiler:util"))
-    testCompileOnly(intellijCoreDep()) { includeJars("intellij-core") }
+    testCompileOnly(intellijCore())
     testCompileOnly(intellijDep()) { includeJars("idea", "idea_rt", "util") }
     testApi(project(":compiler:backend.js"))
     testApi(project(":compiler:backend.wasm"))
@@ -54,7 +54,7 @@ dependencies {
     testApi(projectTests(":kotlin-build-common"))
     testApi(projectTests(":generators:test-generator"))
 
-    testApi(intellijCoreDep()) { includeJars("intellij-core") }
+    testApi(intellijCore())
     testApi(project(":compiler:frontend"))
     testApi(project(":compiler:cli"))
     testApi(project(":compiler:util"))

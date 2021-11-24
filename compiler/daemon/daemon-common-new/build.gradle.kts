@@ -9,7 +9,7 @@ val ktorExcludesForDaemon: List<Pair<String, String>> by rootProject.extra
 dependencies {
     compileOnly(project(":daemon-common"))
     api(kotlinStdlib())
-    compileOnly(intellijCoreDep()) { includeJars("intellij-core") }
+    compileOnly(intellijCore())
     compileOnly(intellijDep()) { includeIntellijCoreJarDependencies(project) }
     api(commonDep("org.jetbrains.kotlinx", "kotlinx-coroutines-core")) {
         isTransitive = false

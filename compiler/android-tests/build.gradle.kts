@@ -30,10 +30,10 @@ dependencies {
     testApi(intellijDep()) { includeJars("groovy", rootProject = rootProject) }
 
     testApi(intellijPluginDep("java")) { includeJars("jps-builders") }
-    testApi(jpsStandalone()) { includeJars("jps-model") }
+    testApi(jpsModel())
     testApi(jpsBuildTest())
 
-    testRuntimeOnly(intellijCoreDep()) { includeJars("intellij-core") }
+    testRuntimeOnly(intellijCore())
     testRuntimeOnly(intellijDep()) { includeJars("jna", rootProject = rootProject) }
 
     testApi("org.junit.platform:junit-platform-launcher:${commonVer("org.junit.platform", "")}")

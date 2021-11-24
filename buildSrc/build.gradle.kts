@@ -196,7 +196,7 @@ fun Project.`samWithReceiver`(configure: org.jetbrains.kotlin.samWithReceiver.gr
         extensions.configure("samWithReceiver", configure)
 
 tasks.withType<KotlinCompile>().configureEach {
-    kotlinOptions.allWarningsAsErrors = true
+    //kotlinOptions.allWarningsAsErrors = true
     kotlinOptions.freeCompilerArgs += listOf(
         "-opt-in=kotlin.RequiresOptIn",
         "-Xskip-runtime-version-check",

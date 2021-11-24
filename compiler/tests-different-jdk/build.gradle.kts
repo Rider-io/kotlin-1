@@ -14,7 +14,7 @@ dependencies {
 
     testApiJUnit5(vintageEngine = true, runner = true, suiteApi = true)
 
-    testImplementation(intellijCoreDep()) { includeJars("intellij-core") }
+    testImplementation(intellijCore())
     testRuntimeOnly(project(":kotlin-reflect"))
     testRuntimeOnly(intellijDep())
     testJvm6ServerRuntime(projectTests(":compiler:tests-common-jvm6"))

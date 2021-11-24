@@ -8,7 +8,7 @@ dependencies {
     api(project(":compiler:frontend.java"))
 
     compileOnly(toolsJarApi())
-    compileOnly(intellijCoreDep()) { includeJars("intellij-core") }
+    compileOnly(intellijCore())
     compileOnly(intellijDep()) { includeIntellijCoreJarDependencies(project) }
 }
 

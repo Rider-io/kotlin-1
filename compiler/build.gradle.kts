@@ -36,7 +36,7 @@ dependencies {
     otherCompilerModules.forEach {
         testCompileOnly(project(it))
     }
-    testCompileOnly(intellijCoreDep()) { includeJars("intellij-core") }
+    testCompileOnly(intellijCore())
 
     testRuntimeOnly(intellijDep()) {
         includeJars(

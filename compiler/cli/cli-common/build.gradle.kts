@@ -10,7 +10,7 @@ dependencies {
     api(project(":js:js.config"))
     api(project(":native:kotlin-native-utils"))
     compileOnly(project(":kotlin-reflect-api"))
-    compileOnly(intellijCoreDep()) { includeJars("intellij-core") }
+    compileOnly(intellijCore())
     compileOnly(intellijDep()) { includeIntellijCoreJarDependencies(project) }
 }
 

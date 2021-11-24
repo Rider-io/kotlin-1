@@ -27,7 +27,7 @@ dependencies {
     compileOnly(project(":compiler:frontend"))
     compileOnly(project(":native:frontend.native"))
     compileOnly(project(":kotlin-util-klib-metadata"))
-    compileOnly(intellijCoreDep()) { includeJars("intellij-core") }
+    compileOnly(intellijCore())
     compileOnly(intellijDep()) { includeJars("trove4j") }
 
     // This dependency is necessary to keep the right dependency record inside of POM file:
@@ -40,7 +40,7 @@ dependencies {
     testImplementation(project(":kotlinx-metadata-klib")) { isTransitive = false }
     testImplementation(project(":kotlinx-metadata")) { isTransitive = false }
     testImplementation(project(":native:kotlin-klib-commonizer-api"))
-    testApi(intellijCoreDep()) { includeJars("intellij-core")}
+    testApi(intellijCore())
 }
 
 val runCommonizer by tasks.registering(JavaExec::class) {

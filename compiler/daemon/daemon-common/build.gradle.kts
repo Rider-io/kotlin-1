@@ -8,7 +8,7 @@ dependencies {
     api(project(":kotlin-build-common"))
     api(kotlinStdlib())
     compileOnly(project(":js:js.config"))
-    compileOnly(intellijCoreDep()) { includeJars("intellij-core") }
+    compileOnly(intellijCore())
     compileOnly(intellijDep()) { includeIntellijCoreJarDependencies(project) }
     api(commonDep("org.jetbrains.kotlinx", "kotlinx-coroutines-core")) {
         isTransitive = false

@@ -9,7 +9,7 @@ dependencies {
     api(project(":js:js.ast"))
     api(project(":js:js.translator"))
     compileOnly(project(":js:js.sourcemap"))
-    compileOnly(intellijCoreDep()) { includeJars("intellij-core") }
+    compileOnly(intellijCore())
     compileOnly(intellijDep()) { includeJars("guava", rootProject = rootProject) }
 }
 

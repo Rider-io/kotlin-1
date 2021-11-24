@@ -13,7 +13,7 @@ dependencies {
     compileOnly(project(":compiler:util"))
     compileOnly(project(":compiler:plugin-api"))
     compileOnly(project(":compiler:ir.backend.common"))
-    compileOnly(intellijCoreDep()) { includeJars("intellij-core") }
+    compileOnly(intellijCore())
     compileOnly(intellijDep()) { includeJars("asm-all", rootProject = rootProject) }
     implementation(kotlinStdlib())
 
@@ -21,7 +21,7 @@ dependencies {
     testApi(project(":compiler:cli"))
     testApi(projectTests(":compiler:tests-common"))
     testApi(commonDep("junit:junit"))
-    testApi(intellijCoreDep()) { includeJars("intellij-core")}
+    testApi(intellijCore())
 }
 
 sourceSets {

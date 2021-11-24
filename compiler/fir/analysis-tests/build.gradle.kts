@@ -11,7 +11,7 @@ plugins {
 }
 
 dependencies {
-    compileOnly(intellijCoreDep()) { includeJars("intellij-core", "guava", rootProject = rootProject) }
+    compileOnly(intellijCore())
 
     testApi(projectTests(":compiler:test-infrastructure"))
     testApi(projectTests(":compiler:test-infrastructure-utils"))
@@ -31,7 +31,7 @@ dependencies {
     testRuntimeOnly(project(":core:descriptors.runtime"))
     testRuntimeOnly(project(":compiler:fir:fir2ir:jvm-backend"))
 
-    testImplementation(intellijCoreDep()) { includeJars("intellij-core") }
+    testImplementation(intellijCore())
     testRuntimeOnly(intellijDep()) {
         includeJars("intellij-deps-fastutil-8.4.1-4", "jps-model", "streamex", "jna", rootProject = rootProject)
     }

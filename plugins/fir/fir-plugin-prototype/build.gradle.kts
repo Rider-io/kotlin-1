@@ -14,7 +14,7 @@ dependencies {
     compileOnly(project(":compiler:ir.backend.common"))
     compileOnly(project(":compiler:ir.tree.impl"))
     compileOnly(project(":compiler:fir:entrypoint"))
-    compileOnly(intellijCoreDep()) { includeJars("intellij-core") }
+    compileOnly(intellijCore())
     compileOnly(project(":kotlin-reflect-api"))
 
     testApiJUnit5()

@@ -15,7 +15,7 @@ dependencies {
     api(project(":js:js.frontend"))
     api(project(":js:js.parser"))
     compileOnly(project(":js:js.sourcemap"))
-    compileOnly(intellijCoreDep()) { includeJars("intellij-core") }
+    compileOnly(intellijCore())
     compileOnly(intellijDep()) { includeJars("trove4j", "guava", rootProject = rootProject) }
 }
 

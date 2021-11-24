@@ -28,7 +28,7 @@ dependencies {
     testImplementation(project(":native:kotlin-klib-commonizer-api"))
 
     testImplementation(project(":kotlin-compiler-embeddable"))
-    testImplementation(intellijCoreDep()) { includeJars("jdom") }
+    testImplementation(intellijDependency("jdom"))
     // testCompileOnly dependency on non-shaded artifacts is needed for IDE support
     // testRuntimeOnly on shaded artifact is needed for running tests with shaded compiler
     testCompileOnly(project(":kotlin-gradle-plugin-test-utils-embeddable"))

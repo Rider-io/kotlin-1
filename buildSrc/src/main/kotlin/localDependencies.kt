@@ -21,7 +21,9 @@ import org.gradle.api.Project
 import org.gradle.api.artifacts.ModuleDependency
 import org.gradle.api.artifacts.dsl.RepositoryHandler
 import org.gradle.api.artifacts.repositories.IvyArtifactRepository
+import org.gradle.internal.impldep.org.eclipse.jgit.lib.ObjectChecker.type
 import org.gradle.kotlin.dsl.extra
+import org.gradle.kotlin.dsl.project
 import java.io.File
 
 private fun Project.kotlinBuildLocalDependenciesDir(): File =
@@ -78,13 +80,33 @@ fun RepositoryHandler.kotlinBuildLocalRepo(project: Project): IvyArtifactReposit
 fun Project.intellijDep(module: String? = null, forIde: Boolean = false) =
     "kotlin.build:${module ?: ideModuleName()}:${ideModuleVersion(forIde)}"
 
-fun Project.intellijCoreDep() = "kotlin.build:intellij-core:${rootProject.extra["versions.intellijSdk"]}"
+fun Project.intellijCore() = dependencies.project(":dependencies:intellij-core")
 
-fun Project.jpsStandalone() = "kotlin.build:jps-standalone:${rootProject.extra["versions.intellijSdk"]}"
+fun Project.intellijDependency(module: String): String {
+    val organisation = when (module) {
+        "guava" -> "com.google.guava"
+        "streamex" -> "one.util"
+        "jna", "jna-platform" -> "net.java.dev.jna"
+        "lz4-java" -> "org.lz4"
+        "oro" -> "oro"
+        "intellij-deps-fastutil" -> "org.jetbrains.intellij.deps.fastutil"
+        else -> "org.jetbrains.intellij.deps"
+    }
+
+    if (!rootProject.extra.has("versions.$module"))
+        error("$module version is missing in versions.properties")
+
+    val version = rootProject.extra.get("versions.$module")
+    return "$organisation:$module:$version"
+}
+
+fun Project.jpsModel() = "com.jetbrains.intellij.platform:jps-model:${rootProject.extra["versions.intellijSdk"]}"
+fun Project.jpsModelImpl() = "com.jetbrains.intellij.platform:jps-model-impl:${rootProject.extra["versions.intellijSdk"]}"
 
 fun Project.jpsBuildTest() = "com.jetbrains.intellij.idea:jps-build-test:${rootProject.extra["versions.intellijSdk"]}"
 
-fun Project.kotlinxCollectionsImmutable() = "org.jetbrains.kotlinx:kotlinx-collections-immutable-jvm:${rootProject.extra["versions.kotlinx-collections-immutable"]}"
+fun Project.kotlinxCollectionsImmutable() =
+    "org.jetbrains.kotlinx:kotlinx-collections-immutable-jvm:${rootProject.extra["versions.kotlinx-collections-immutable"]}"
 
 /**
  * Runtime version of annotations that are already in Kotlin stdlib (historically Kotlin has older version of this one).

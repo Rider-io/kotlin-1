@@ -8,7 +8,7 @@ plugins {
 dependencies {
     testApi(project(":kotlin-scripting-compiler"))
     testApi(projectTests(":compiler:tests-common"))
-    testImplementation(intellijCoreDep()) { includeJars("intellij-core") }
+    testImplementation(intellijCore())
     testApi(projectTests(":generators:test-generator"))
     testRuntimeOnly(project(":kotlin-reflect"))
     testRuntimeOnly(toolsJar())

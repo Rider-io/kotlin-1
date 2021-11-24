@@ -204,24 +204,20 @@ dependencies {
     fatJarContents(commonDep("io.javaslang", "javaslang"))
     fatJarContents(commonDep("org.jetbrains.kotlinx:kotlinx-collections-immutable-jvm")) { isTransitive = false }
 
-    fatJarContents(intellijCoreDep()) { includeJars("intellij-core") }
-    fatJarContents(intellijDep()) { includeJars("jna-platform") }
+    fatJarContents(intellijCore())
+    fatJarContents(intellijDependency("jna-platform")) { isTransitive = false }
+    fatJarContents(intellijDependency("intellij-deps-fastutil")) { isTransitive = false }
+    fatJarContents(intellijDependency("lz4-java")) { isTransitive = false }
+    fatJarContents(intellijDependency("asm-all")) { isTransitive = false }
+    fatJarContents(intellijDependency("guava")) { isTransitive = false }
+    fatJarContents(intellijDependency("jna")) { isTransitive = false }
 
-    fatJarContents(intellijDep()) { includeJars("intellij-deps-fastutil-8.4.1-4") }
-
-    fatJarContents(intellijDep()) { includeJars("lz4-java", rootProject = rootProject) }
-
-    fatJarContents(intellijDep()) {
-        includeIntellijCoreJarDependencies(project) {
-            !(it.startsWith("jdom") || it.startsWith("log4j") || it.startsWith("trove4j") || it.startsWith("streamex"))
-        }
-    }
-
-    fatJarContentsStripServices(jpsStandalone()) { includeJars("jps-model") }
-
-    fatJarContentsStripMetadata(intellijDep()) { includeJars("oro-2.0.8", "jdom", "log4j" ) }
-
-    fatJarContentsStripVersions(intellijCoreDep()) { includeJars("streamex", rootProject = rootProject) }
+    fatJarContentsStripServices(jpsModel()) { isTransitive = false }
+    fatJarContentsStripServices(jpsModelImpl()) { isTransitive = false }
+    fatJarContentsStripMetadata(intellijDependency("oro")) { isTransitive = false }
+    fatJarContentsStripMetadata(intellijDependency("jdom")) { isTransitive = false }
+    fatJarContentsStripMetadata(intellijDependency("log4j")) { isTransitive = false }
+    fatJarContentsStripVersions(intellijDependency("streamex")) { isTransitive = false }
 }
 
 publish()

@@ -6,7 +6,7 @@ plugins {
 dependencies {
     api(project(":compiler:config"))
     api(project(":compiler:container"))
-    compileOnly(intellijCoreDep()) { includeJars("intellij-core") }
+    compileOnly(intellijCore())
     compileOnly(intellijDep()) { includeJars("guava", rootProject = rootProject) }
 }
 

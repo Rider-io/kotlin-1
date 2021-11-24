@@ -24,8 +24,7 @@ dependencies {
     implementation(project(":analysis:analysis-api-providers"))
     implementation(project(":analysis:analysis-internal-utils"))
 
-    api(intellijCoreDep()) { includeJars("intellij-core", "guava", rootProject = rootProject) }
-
+    api(intellijCore())
 
     testApi(projectTests(":compiler:test-infrastructure-utils"))
     testApi(projectTests(":compiler:test-infrastructure"))

@@ -39,7 +39,7 @@ dependencies {
     compileOnly(project(":compiler:ir.tree.impl"))
 
     compileOnly(toolsJarApi())
-    compileOnly(intellijCoreDep()) { includeJars("intellij-core") }
+    compileOnly(intellijCore())
     compileOnly(intellijDep()) { includeIntellijCoreJarDependencies(project) }
 
     testApi(project(":compiler:backend"))

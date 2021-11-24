@@ -6,7 +6,7 @@ plugins {
 dependencies {
     testImplementation(project(":compiler:fir:entrypoint"))
     testImplementation(project(":compiler:cli"))
-    testImplementation(intellijCoreDep()) { includeJars("intellij-core") }
+    testImplementation(intellijCore())
 
     testCompileOnly(project(":kotlin-reflect-api"))
     testRuntimeOnly(project(":kotlin-reflect"))

@@ -11,7 +11,7 @@ dependencies {
     testApi(intellijDep()) {
         includeJars("gson", "groovy", "groovy-xml", rootProject = rootProject)
     }
-    testCompileOnly(intellijCoreDep()) { includeJars("intellij-core") }
+    testCompileOnly(intellijCore())
     testRuntimeOnly(intellijDep()) {
         includeJars("streamex", rootProject = rootProject)
     }

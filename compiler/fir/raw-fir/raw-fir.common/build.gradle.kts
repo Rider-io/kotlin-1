@@ -14,10 +14,11 @@ dependencies {
     implementation(kotlinxCollectionsImmutable())
     implementation(project(":compiler:psi"))
 
-    compileOnly(intellijCoreDep()) { includeJars("intellij-core", "guava", rootProject = rootProject) }
+    compileOnly(intellijCore())
+    compileOnly(intellijDependency("guava"))
 
-    testCompileOnly(intellijCoreDep()) { includeJars("intellij-core") }
-    testRuntimeOnly(intellijCoreDep()) { includeJars("intellij-core") }
+    testCompileOnly(intellijCore())
+    testRuntimeOnly(intellijCore())
 }
 
 sourceSets {

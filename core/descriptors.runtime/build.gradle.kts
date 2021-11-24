@@ -25,9 +25,9 @@ dependencies {
     testApi(projectTests(":compiler:tests-common"))
     testApi(projectTests(":generators:test-generator"))
 
-    testApi(intellijCoreDep()) { includeJars("intellij-core") }
+    testApi(intellijCore())
     testRuntimeOnly(intellijDep()) { includeJars("platform-concurrency", "idea_rt", rootProject = rootProject) }
-    testRuntimeOnly(jpsStandalone()) { includeJars("jps-model") }
+    testRuntimeOnly(jpsModel())
 }
 
 sourceSets {

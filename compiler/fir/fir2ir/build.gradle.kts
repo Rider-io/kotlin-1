@@ -17,7 +17,7 @@ dependencies {
     compileOnly(project(":compiler:ir.psi2ir"))
     compileOnly(project(":compiler:ir.backend.common"))
 
-    compileOnly(intellijCoreDep()) { includeJars("intellij-core") }
+    compileOnly(intellijCore())
 
     testCompileOnly(project(":kotlin-test:kotlin-test-jvm"))
     testCompileOnly(project(":kotlin-test:kotlin-test-junit"))
@@ -38,8 +38,8 @@ dependencies {
     testRuntimeOnly(project(":compiler:fir:fir2ir:jvm-backend"))
     testRuntimeOnly(project(":generators"))
 
-    testCompileOnly(intellijCoreDep()) { includeJars("intellij-core") }
-    testRuntimeOnly(intellijCoreDep()) { includeJars("intellij-core") }
+    testCompileOnly(intellijCore())
+    testRuntimeOnly(intellijCore())
 
     testRuntimeOnly(intellijDep()) {
         includeJars("jna", rootProject = rootProject)
