@@ -6,11 +6,11 @@
 package org.jetbrains.kotlin.backend.wasm.ir2wasm
 
 import org.jetbrains.kotlin.backend.common.ir.isOverridableOrOverrides
-import org.jetbrains.kotlin.backend.wasm.lower.WasmSignature
 import org.jetbrains.kotlin.backend.wasm.lower.wasmSignature
 import org.jetbrains.kotlin.descriptors.DescriptorVisibilities
 import org.jetbrains.kotlin.descriptors.Modality
 import org.jetbrains.kotlin.ir.IrBuiltIns
+import org.jetbrains.kotlin.ir.backend.js.lower.JsCommonSignature
 import org.jetbrains.kotlin.ir.backend.js.utils.realOverrideTarget
 import org.jetbrains.kotlin.ir.declarations.IrClass
 import org.jetbrains.kotlin.ir.declarations.IrDeclaration
@@ -60,7 +60,7 @@ class ClassMetadata(
     }
 
     init {
-        val signatureToFunctions = mutableMapOf<WasmSignature, MutableList<IrSimpleFunction>>()
+        val signatureToFunctions = mutableMapOf<JsCommonSignature, MutableList<IrSimpleFunction>>()
         for (vm in virtualMethods) {
             signatureToFunctions.getOrPut(vm.signature) { mutableListOf() }.add(vm.function)
         }
@@ -76,7 +76,7 @@ class ClassMetadata(
         }
     }
 
-    private val virtualMethodsSignatures: Set<WasmSignature> =
+    private val virtualMethodsSignatures: Set<JsCommonSignature> =
         virtualMethods.map { it.signature }.toSet()
 }
 
@@ -99,7 +99,7 @@ class InterfaceMetadata(
 
 class VirtualMethodMetadata(
     val function: IrSimpleFunction,
-    val signature: WasmSignature
+    val signature: JsCommonSignature
 )
 
 fun IrClass.allSuperInterfaces(): List<IrClass> =

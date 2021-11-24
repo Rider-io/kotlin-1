@@ -5,9 +5,8 @@
 
 package org.jetbrains.kotlin.backend.wasm.ir2wasm
 
-import org.jetbrains.kotlin.backend.common.push
-import org.jetbrains.kotlin.backend.wasm.lower.WasmSignature
 import org.jetbrains.kotlin.ir.IrBuiltIns
+import org.jetbrains.kotlin.ir.backend.js.lower.JsCommonSignature
 import org.jetbrains.kotlin.ir.declarations.IrDeclarationWithName
 import org.jetbrains.kotlin.ir.declarations.IrExternalPackageFragment
 import org.jetbrains.kotlin.ir.symbols.*
@@ -31,7 +30,7 @@ class WasmCompiledModuleFragment(val irBuiltIns: IrBuiltIns) {
     val virtualFunctionId =
         ReferencableElements<IrFunctionSymbol, Int>()
     val signatureId =
-        ReferencableElements<WasmSignature, Int>()
+        ReferencableElements<JsCommonSignature, Int>()
     val stringLiteralId =
         ReferencableElements<String, Int>()
 
@@ -51,7 +50,7 @@ class WasmCompiledModuleFragment(val irBuiltIns: IrBuiltIns) {
     val classes = mutableListOf<IrClassSymbol>()
     val interfaces = mutableListOf<IrClassSymbol>()
     val virtualFunctions = mutableListOf<IrSimpleFunctionSymbol>()
-    val signatures = LinkedHashSet<WasmSignature>()
+    val signatures = LinkedHashSet<JsCommonSignature>()
 
     val typeInfo =
         ReferencableAndDefinable<IrClassSymbol, ConstantDataElement>()
@@ -83,6 +82,7 @@ class WasmCompiledModuleFragment(val irBuiltIns: IrBuiltIns) {
     val jsFuns = mutableListOf<JsCodeSnippet>()
 
     class FunWithPriority(val function: WasmFunction, val priority: String)
+
     val initFunctions = mutableListOf<FunWithPriority>()
 
     val scratchMemAddr = WasmSymbol<Int>()
@@ -183,7 +183,7 @@ class WasmCompiledModuleFragment(val irBuiltIns: IrBuiltIns) {
         val logTypeInfo = false
         if (logTypeInfo) {
             println("Signatures: ")
-            for ((index, signature: WasmSignature) in signatures.withIndex()) {
+            for ((index, signature: JsCommonSignature) in signatures.withIndex()) {
                 println("  -- $index $signature")
             }
 

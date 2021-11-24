@@ -6,7 +6,7 @@
 package org.jetbrains.kotlin.backend.wasm.ir2wasm
 
 import org.jetbrains.kotlin.backend.wasm.WasmBackendContext
-import org.jetbrains.kotlin.backend.wasm.lower.WasmSignature
+import org.jetbrains.kotlin.ir.backend.js.lower.JsCommonSignature
 import org.jetbrains.kotlin.ir.declarations.IrField
 import org.jetbrains.kotlin.ir.declarations.IrValueParameter
 import org.jetbrains.kotlin.ir.symbols.IrClassSymbol
@@ -31,7 +31,7 @@ interface WasmBaseCodegenContext {
     fun referenceVirtualFunctionId(irFunction: IrSimpleFunctionSymbol): WasmSymbol<Int>
     fun referenceClassRTT(irClass: IrClassSymbol): WasmSymbol<WasmGlobal>
 
-    fun referenceSignatureId(signature: WasmSignature): WasmSymbol<Int>
+    fun referenceSignatureId(signature: JsCommonSignature): WasmSymbol<Int>
 
     fun referenceInterfaceTable(irFunction: IrFunctionSymbol): WasmSymbol<WasmTable>
 

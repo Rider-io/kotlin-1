@@ -6,8 +6,8 @@
 package org.jetbrains.kotlin.backend.wasm.ir2wasm
 
 import org.jetbrains.kotlin.backend.wasm.WasmBackendContext
-import org.jetbrains.kotlin.backend.wasm.lower.WasmSignature
 import org.jetbrains.kotlin.descriptors.Modality
+import org.jetbrains.kotlin.ir.backend.js.lower.JsCommonSignature
 import org.jetbrains.kotlin.ir.declarations.IrField
 import org.jetbrains.kotlin.ir.declarations.IrValueParameter
 import org.jetbrains.kotlin.ir.symbols.IrClassSymbol
@@ -16,9 +16,7 @@ import org.jetbrains.kotlin.ir.symbols.IrFunctionSymbol
 import org.jetbrains.kotlin.ir.symbols.IrSimpleFunctionSymbol
 import org.jetbrains.kotlin.ir.types.IrType
 import org.jetbrains.kotlin.ir.types.defaultType
-import org.jetbrains.kotlin.ir.types.getClass
 import org.jetbrains.kotlin.ir.types.isNothing
-import org.jetbrains.kotlin.ir.util.isFunction
 import org.jetbrains.kotlin.ir.util.parentAsClass
 import org.jetbrains.kotlin.wasm.ir.*
 
@@ -182,7 +180,7 @@ class WasmModuleCodegenContextImpl(
         return wasmFragment.virtualFunctionId.reference(irFunction)
     }
 
-    override fun referenceSignatureId(signature: WasmSignature): WasmSymbol<Int> {
+    override fun referenceSignatureId(signature: JsCommonSignature): WasmSymbol<Int> {
         wasmFragment.signatures.add(signature)
         return wasmFragment.signatureId.reference(signature)
     }
