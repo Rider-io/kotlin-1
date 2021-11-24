@@ -43,9 +43,9 @@ class XCFrameworkIT : BaseGradleIT() {
                 assertTasksExecuted(":shared:assembleSdkDebugWatchosFatFrameworkForXCFramework")
                 assertTasksExecuted(":shared:assembleSdkDebugXCFramework")
                 assertFileExists("/shared/build/XCFrameworks/debug/sdk.xcframework")
-                assertFileExists("/shared/build/XCFrameworks/debug/sdk.xcframework/ios-arm64/dSYMs/sdk.framework.dSYM")
-                assertFileExists("/shared/build/fat-framework/debug/sdk/watchos/sdk.framework")
-                assertFileExists("/shared/build/fat-framework/debug/sdk/watchos/sdk.framework.dSYM")
+                assertFileExists("/shared/build/XCFrameworks/debug/sdk.xcframework/ios-arm64/dSYMs/shared.framework.dSYM")
+                assertFileExists("/shared/build/sdkXCFrameworkTemp/fatframework/debug/watchos/sdk.framework")
+                assertFileExists("/shared/build/sdkXCFrameworkTemp/fatframework/debug/watchos/sdk.framework.dSYM")
             }
 
             build("assembleSdkDebugXCFramework") {
