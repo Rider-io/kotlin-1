@@ -106,6 +106,10 @@ object XCFramework : ArtifactType<KotlinNativeXCFramework>({ KotlinNativeXCFrame
 annotation class ExperimentalLibraryDsl
 
 @ExperimentalLibraryDsl
+fun <T : KotlinArtifact> Project.kotlinArtifact(type: ArtifactType<T>, configure: T.() -> Unit) =
+    kotlinArtifact(name, type, configure)
+
+@ExperimentalLibraryDsl
 fun <T : KotlinArtifact> Project.kotlinArtifact(name: String, type: ArtifactType<T>, configure: T.() -> Unit) {
     val artifact = type.create()
     artifact.addModule(this)
