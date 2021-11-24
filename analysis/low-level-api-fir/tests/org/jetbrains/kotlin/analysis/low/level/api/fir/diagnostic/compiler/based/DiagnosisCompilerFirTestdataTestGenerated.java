@@ -3657,6 +3657,12 @@ public class DiagnosisCompilerFirTestdataTestGenerated extends AbstractDiagnosis
                 public void testWhen() throws Exception {
                     runTest("compiler/fir/analysis-tests/testData/resolve/smartcasts/controlStructures/when.kt");
                 }
+
+                @Test
+                @TestMetadata("whenSubjectExpression.kt")
+                public void testWhenSubjectExpression() throws Exception {
+                    runTest("compiler/fir/analysis-tests/testData/resolve/smartcasts/controlStructures/whenSubjectExpression.kt");
+                }
             }
 
             @Nested
@@ -4232,6 +4238,30 @@ public class DiagnosisCompilerFirTestdataTestGenerated extends AbstractDiagnosis
         @TestMetadata("kotlinComparatorAlias.kt")
         public void testKotlinComparatorAlias() throws Exception {
             runTest("compiler/fir/analysis-tests/testData/resolveWithStdlib/kotlinComparatorAlias.kt");
+        }
+
+        @Test
+        @TestMetadata("kt20072.kt")
+        public void testKt20072() throws Exception {
+            runTest("compiler/fir/analysis-tests/testData/resolveWithStdlib/kt20072.kt");
+        }
+
+        @Test
+        @TestMetadata("kt39073.kt")
+        public void testKt39073() throws Exception {
+            runTest("compiler/fir/analysis-tests/testData/resolveWithStdlib/kt39073.kt");
+        }
+
+        @Test
+        @TestMetadata("kt39157_1.kt")
+        public void testKt39157_1() throws Exception {
+            runTest("compiler/fir/analysis-tests/testData/resolveWithStdlib/kt39157_1.kt");
+        }
+
+        @Test
+        @TestMetadata("kt39157_2.kt")
+        public void testKt39157_2() throws Exception {
+            runTest("compiler/fir/analysis-tests/testData/resolveWithStdlib/kt39157_2.kt");
         }
 
         @Test
